@@ -1,14 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:fresh_keep_admin/core/errors/failures.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/entities/daily_count.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/entities/dashboard_range.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/entities/daily_count.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/entities/selected_range.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/entities/product_type_count.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_product_type_counts_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_products_added_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_receipts_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_user_registrations_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_products_added_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_receipts_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_user_registrations_usecase.dart';
 import 'package:fresh_keep_admin/features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import 'package:fresh_keep_admin/shared/metrics/presentation/section_state.dart';
 
 import '../../../../fakes/fake_dashboard_repository.dart';
 

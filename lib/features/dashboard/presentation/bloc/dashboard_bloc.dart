@@ -3,15 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/errors/failures.dart';
-import '../../domain/entities/daily_count.dart';
-import '../../domain/entities/dashboard_range.dart';
-import '../../domain/entities/date_range.dart';
+import '../../../../shared/metrics/domain/entities/daily_count.dart';
+import '../../../../shared/metrics/domain/entities/selected_range.dart';
+import '../../../../shared/metrics/domain/entities/date_range.dart';
 import '../../domain/entities/product_type_count.dart';
 import '../../domain/usecases/get_product_type_counts_usecase.dart';
-import '../../domain/usecases/get_products_added_usecase.dart';
-import '../../domain/usecases/get_receipts_usecase.dart';
-import '../../domain/usecases/get_user_registrations_usecase.dart';
-import '../dashboard_query.dart';
+import '../../../../shared/metrics/domain/usecases/get_products_added_usecase.dart';
+import '../../../../shared/metrics/domain/usecases/get_receipts_usecase.dart';
+import '../../../../shared/metrics/domain/usecases/get_user_registrations_usecase.dart';
+import '../../../../shared/metrics/presentation/range_query.dart';
+import '../../../../shared/metrics/presentation/section_state.dart';
 
 part 'dashboard_event.dart';
 part 'dashboard_state.dart';
@@ -42,8 +43,8 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   }) : today = today ?? DateTime.now,
        super(
          DashboardState(
-           range: kDefaultDashboardRange,
-           resolvedRange: kDefaultDashboardRange.resolve(
+           range: kDefaultSelectedRange,
+           resolvedRange: kDefaultSelectedRange.resolve(
              (today ?? DateTime.now)(),
            ),
          ),
@@ -95,7 +96,7 @@ class DashboardBloc extends Bloc<DashboardEvent, DashboardState> {
   /// preset follows the date), then fetches them in parallel.
   Future<void> _load(
     Emitter<DashboardState> emit, {
-    required DashboardRange range,
+    required SelectedRange range,
     required List<DashboardSection> sections,
   }) async {
     final resolved = range.resolve(today());

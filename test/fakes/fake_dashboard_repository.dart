@@ -2,24 +2,27 @@ import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:fresh_keep_admin/core/errors/failures.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/entities/daily_count.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/entities/date_range.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/entities/daily_count.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/entities/date_range.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/entities/product_type_count.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/repositories/dashboard_repository.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/repositories/metrics_repository.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_product_type_counts_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_products_added_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_receipts_usecase.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/usecases/get_user_registrations_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_products_added_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_receipts_usecase.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/usecases/get_user_registrations_usecase.dart';
 import 'package:fresh_keep_admin/features/dashboard/presentation/bloc/dashboard_bloc.dart';
 
 typedef DailyResult = Either<AdminFailure, List<DailyCount>>;
 typedef TypesResult = Either<AdminFailure, List<ProductTypeCount>>;
 
-/// Answers each endpoint from a settable result, and records calls.
+/// Answers each endpoint (daily metrics and product types) from a settable
+/// result, and records calls, including the `creatorId` of each daily call.
 ///
 /// When [holdRequests] is true, daily calls wait until [release] is called
 /// for their range, so tests can control the order responses arrive in.
-class FakeDashboardRepository implements DashboardRepository {
+class FakeDashboardRepository
+    implements MetricsRepository, DashboardRepository {
   DailyResult registrations = const Right([]);
   DailyResult products = const Right([]);
   DailyResult receipts = const Right([]);
@@ -29,6 +32,7 @@ class FakeDashboardRepository implements DashboardRepository {
   final _held = <DateRange, Completer<void>>{};
 
   final List<(String, DateRange?)> calls = [];
+  final List<String?> creatorIds = [];
 
   int callsTo(String endpoint) => calls.where((c) => c.$1 == endpoint).length;
 
@@ -37,9 +41,11 @@ class FakeDashboardRepository implements DashboardRepository {
   Future<DailyResult> _daily(
     String name,
     DateRange range,
-    DailyResult Function() result,
-  ) async {
+    DailyResult Function() result, {
+    String? creatorId,
+  }) async {
     calls.add((name, range));
+    creatorIds.add(creatorId);
     if (holdRequests) {
       await _held.putIfAbsent(range, Completer<void>.new).future;
     }
@@ -51,12 +57,12 @@ class FakeDashboardRepository implements DashboardRepository {
       _daily('registrations', range, () => registrations);
 
   @override
-  Future<DailyResult> getProductsAdded(DateRange range) =>
-      _daily('products', range, () => products);
+  Future<DailyResult> getProductsAdded(DateRange range, {String? creatorId}) =>
+      _daily('products', range, () => products, creatorId: creatorId);
 
   @override
-  Future<DailyResult> getReceipts(DateRange range) =>
-      _daily('receipts', range, () => receipts);
+  Future<DailyResult> getReceipts(DateRange range, {String? creatorId}) =>
+      _daily('receipts', range, () => receipts, creatorId: creatorId);
 
   @override
   Future<TypesResult> getProductTypeCounts() async {

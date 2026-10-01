@@ -7,7 +7,7 @@ sealed class DashboardEvent {
 /// The URL's range changed (or the page opened). Reloads the daily sections;
 /// product types load on the first one only.
 final class DashboardRangeChanged extends DashboardEvent {
-  final DashboardRange range;
+  final SelectedRange range;
 
   const DashboardRangeChanged(this.range);
 }
