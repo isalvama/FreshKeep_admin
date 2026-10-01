@@ -20,6 +20,7 @@ import '../../features/users/data/repositories/users_repository_impl.dart';
 import '../../features/users/domain/repositories/users_repository.dart';
 import '../../features/users/domain/usecases/get_user_details_usecase.dart';
 import '../../features/users/domain/usecases/get_users_usecase.dart';
+import '../../features/users/presentation/bloc/user_detail_bloc.dart';
 import '../../features/users/presentation/bloc/users_list_bloc.dart';
 import '../../features/users/presentation/users_list_location.dart';
 import '../../shared/metrics/data/datasources/metrics_remote_datasource.dart';
@@ -103,4 +104,11 @@ void setupServiceLocator({
   getIt.registerFactory(() => GetUserDetailsUseCase(getIt()));
   getIt.registerLazySingleton(UsersListLocation.new);
   getIt.registerFactory(() => UsersListBloc(getUsersUseCase: getIt()));
+  getIt.registerFactory(
+    () => UserDetailBloc(
+      getUserDetailsUseCase: getIt(),
+      getProductsAddedUseCase: getIt(),
+      getReceiptsUseCase: getIt(),
+    ),
+  );
 }

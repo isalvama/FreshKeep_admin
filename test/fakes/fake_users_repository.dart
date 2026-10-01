@@ -21,6 +21,11 @@ class FakeUsersRepository implements UsersRepository {
   bool holdRequests = false;
   final held = <Completer<void>>[];
 
+  /// Like [holdRequests], for detail calls; the answer is read on release,
+  /// so a test can change [details] before completing a held call.
+  bool holdDetails = false;
+  final heldDetails = <Completer<void>>[];
+
   final List<(DateRange, int)> listCalls = [];
   final List<String> detailCalls = [];
 
@@ -41,6 +46,11 @@ class FakeUsersRepository implements UsersRepository {
   @override
   Future<Either<AdminFailure, UserDetails>> getUser(String userId) async {
     detailCalls.add(userId);
+    if (holdDetails) {
+      final completer = Completer<void>();
+      heldDetails.add(completer);
+      await completer.future;
+    }
     return details;
   }
 }
