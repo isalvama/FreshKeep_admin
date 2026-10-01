@@ -12,7 +12,7 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../fakes/fake_auth_repository.dart';
-import '../../../../fakes/fake_dashboard_repository.dart';
+import '../../../../fakes/test_route_dependencies.dart';
 import '../../../../fakes/jwt_factory.dart';
 
 void main() {
@@ -46,7 +46,7 @@ void main() {
     router = buildAppRouter(
       authBloc,
       initialLocation: initialLocation,
-      dashboardBlocFactory: buildTestDashboardBloc,
+      dependencies: testRouteDependencies(),
     );
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -143,7 +143,8 @@ void main() {
       await tester.tap(inRail(find.text('Users')));
       await tester.pumpAndSettle();
 
-      expect(location(), '/users');
+      // The users list then normalizes its missing range and page (SPEC 03).
+      expect(location(), '/users?range=30d&page=1');
       expect(rail(tester).selectedIndex, 1);
     });
 
@@ -160,9 +161,9 @@ void main() {
     ) async {
       await pumpShell(tester);
 
-      // The dashboard is built (SPEC 02); the rest are placeholders.
+      // Dashboard (SPEC 02) and users (SPEC 03) are built; the rest are
+      // placeholders.
       for (final (path, spec) in [
-        ('/users', '03'),
         ('/products', '04'),
         ('/receipts', '05'),
         ('/admins', '06'),

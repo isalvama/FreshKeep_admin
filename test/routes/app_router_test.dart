@@ -11,7 +11,7 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../fakes/fake_auth_repository.dart';
-import '../fakes/fake_dashboard_repository.dart';
+import '../fakes/test_route_dependencies.dart';
 
 void main() {
   late SessionExpiredNotifier notifier;
@@ -40,7 +40,7 @@ void main() {
     router = buildAppRouter(
       authBloc,
       initialLocation: initialLocation,
-      dashboardBlocFactory: buildTestDashboardBloc,
+      dependencies: testRouteDependencies(),
     );
     // Same providers as App: the login page needs both blocs.
     await tester.pumpWidget(
@@ -69,15 +69,15 @@ void main() {
   testWidgets('a logged-out deep link goes to login, then back after login', (
     tester,
   ) async {
-    await pumpRouter(tester, initialLocation: '/users?x=1');
+    await pumpRouter(tester, initialLocation: '/products?x=1');
 
-    expect(location(), '/login?from=%2Fusers%3Fx%3D1');
+    expect(location(), '/login?from=%2Fproducts%3Fx%3D1');
 
     authBloc.add(const LoggedIn(kTestAdmin));
     await tester.pumpAndSettle();
 
-    expect(location(), '/users?x=1');
-    expect(find.text('Coming in SPEC 03'), findsOneWidget);
+    expect(location(), '/products?x=1');
+    expect(find.text('Coming in SPEC 04'), findsOneWidget);
   });
 
   testWidgets('a logged-out section sub-page goes to login with it as from', (

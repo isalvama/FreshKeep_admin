@@ -4,17 +4,17 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../core/di/service_locator.dart';
-
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
-import '../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
 import '../features/shell/presentation/pages/section_placeholder_page.dart';
 import '../features/shell/presentation/shell_destination.dart';
+import '../features/users/presentation/pages/users_list_page.dart';
+import '../features/users/presentation/users_list_query.dart';
 import 'redirect.dart';
+import 'route_dependencies.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   late final StreamSubscription<dynamic> _subscription;
@@ -32,15 +32,13 @@ class GoRouterRefreshStream extends ChangeNotifier {
 }
 
 /// [initialLocation] is for tests; in the browser the router starts from the
-/// URL. [dashboardBlocFactory] defaults to get_it; tests pass their own.
+/// URL. [dependencies] defaults to the service locator; tests pass fakes.
 GoRouter buildAppRouter(
   AuthBloc authBloc, {
   String? initialLocation,
-  DashboardBloc Function()? dashboardBlocFactory,
+  RouteDependencies? dependencies,
 }) {
-  final createDashboardBloc =
-      dashboardBlocFactory ?? () => getIt<DashboardBloc>();
-
+  final deps = dependencies ?? RouteDependencies.fromServiceLocator();
   return GoRouter(
     initialLocation: initialLocation,
     refreshListenable: GoRouterRefreshStream(authBloc.stream),
@@ -67,13 +65,33 @@ GoRouter buildAppRouter(
                 key: state.pageKey,
                 child: switch (destination.path) {
                   kDashboardPath => BlocProvider(
-                    create: (_) => createDashboardBloc(),
+                    create: (_) => deps.dashboardBloc(),
                     child: DashboardPage(query: state.uri.queryParameters),
+                  ),
+                  kUsersPath => BlocProvider(
+                    create: (_) => deps.usersListBloc(),
+                    child: UsersListPage(
+                      query: state.uri.queryParameters,
+                      location: deps.usersListLocation,
+                    ),
                   ),
                   _ => SectionPlaceholderPage(destination: destination),
                 },
               ),
             ),
+          // A sibling of /users, not a child: as a child, the list page would
+          // stay underneath and be rebuilt with the detail URL (no range or
+          // page), and its URL normalization would fight the navigation.
+          GoRoute(
+            path: '$kUsersPath/:userId',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              // Temporary: SPEC 03 step 8 builds the user detail page.
+              child: Center(
+                child: Text('User ${state.pathParameters['userId']}'),
+              ),
+            ),
+          ),
         ],
       ),
     ],

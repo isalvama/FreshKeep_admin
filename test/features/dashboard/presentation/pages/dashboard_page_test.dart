@@ -19,6 +19,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../fakes/fake_auth_repository.dart';
 import '../../../../fakes/fake_dashboard_repository.dart';
+import '../../../../fakes/test_route_dependencies.dart';
 
 void main() {
   late FakeDashboardRepository repository;
@@ -67,8 +68,7 @@ void main() {
     router = buildAppRouter(
       authBloc,
       initialLocation: location,
-      dashboardBlocFactory: () =>
-          buildTestDashboardBloc(repository: repository),
+      dependencies: testRouteDependencies(dashboard: repository),
     );
     await tester.pumpWidget(
       MultiBlocProvider(
