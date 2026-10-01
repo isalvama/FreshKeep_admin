@@ -11,6 +11,7 @@ import '../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../features/products/presentation/pages/product_detail_page.dart';
 import '../features/products/presentation/pages/products_list_page.dart';
 import '../features/products/presentation/products_list_query.dart';
+import '../features/receipts/presentation/pages/receipt_detail_page.dart';
 import '../features/receipts/presentation/pages/receipts_list_page.dart';
 import '../features/receipts/presentation/receipts_list_query.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
@@ -130,14 +131,16 @@ GoRouter buildAppRouter(
             ),
           ),
           // A sibling of /receipts, for the same reason as /users/:userId.
-          // TEMPORARY (SPEC 05 step 6): replaced by ReceiptDetailPage in
-          // step 7.
           GoRoute(
             path: '$kReceiptsPath/:receiptId',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: Center(
-                child: Text('Receipt ${state.pathParameters['receiptId']}'),
+              child: BlocProvider(
+                create: (_) => deps.receiptDetailBloc(),
+                child: ReceiptDetailPage(
+                  receiptId: state.pathParameters['receiptId']!,
+                  location: deps.receiptsListLocation,
+                ),
               ),
             ),
           ),

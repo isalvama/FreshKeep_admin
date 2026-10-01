@@ -5,7 +5,9 @@ import 'package:fresh_keep_admin/features/products/domain/usecases/get_receipt_l
 import 'package:fresh_keep_admin/features/products/presentation/bloc/product_detail_bloc.dart';
 import 'package:fresh_keep_admin/features/products/presentation/bloc/products_list_bloc.dart';
 import 'package:fresh_keep_admin/features/products/presentation/products_list_location.dart';
+import 'package:fresh_keep_admin/features/receipts/domain/usecases/get_receipt_details_usecase.dart';
 import 'package:fresh_keep_admin/features/receipts/domain/usecases/get_receipts_list_usecase.dart';
+import 'package:fresh_keep_admin/features/receipts/presentation/bloc/receipt_detail_bloc.dart';
 import 'package:fresh_keep_admin/features/receipts/presentation/bloc/receipts_list_bloc.dart';
 import 'package:fresh_keep_admin/features/receipts/presentation/receipts_list_location.dart';
 import 'package:fresh_keep_admin/features/users/domain/usecases/get_user_details_usecase.dart';
@@ -66,6 +68,10 @@ RouteDependencies testRouteDependencies({
     receiptsListBloc: () => ReceiptsListBloc(
       getReceiptsListUseCase: GetReceiptsListUseCase(receiptsRepository),
       getCreatorLabelUseCase: GetCreatorLabelUseCase(receiptsRepository),
+      today: () => kTestToday,
+    ),
+    receiptDetailBloc: () => ReceiptDetailBloc(
+      getReceiptDetailsUseCase: GetReceiptDetailsUseCase(receiptsRepository),
       today: () => kTestToday,
     ),
     receiptsListLocation: receiptsListLocation ?? ReceiptsListLocation(),

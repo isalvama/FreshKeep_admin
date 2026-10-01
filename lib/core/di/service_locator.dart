@@ -29,6 +29,7 @@ import '../../features/receipts/data/repositories/receipts_repository_impl.dart'
 import '../../features/receipts/domain/repositories/receipts_repository.dart';
 import '../../features/receipts/domain/usecases/get_receipt_details_usecase.dart';
 import '../../features/receipts/domain/usecases/get_receipts_list_usecase.dart';
+import '../../features/receipts/presentation/bloc/receipt_detail_bloc.dart';
 import '../../features/receipts/presentation/bloc/receipts_list_bloc.dart';
 import '../../features/receipts/presentation/receipts_list_location.dart';
 import '../../features/users/data/datasources/users_remote_datasource.dart';
@@ -169,5 +170,8 @@ void setupServiceLocator({
       getReceiptsListUseCase: getIt(),
       getCreatorLabelUseCase: getIt(),
     ),
+  );
+  getIt.registerFactory(
+    () => ReceiptDetailBloc(getReceiptDetailsUseCase: getIt()),
   );
 }
