@@ -10,6 +10,13 @@ import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/login_bloc.dart';
+import '../../features/dashboard/data/datasources/dashboard_remote_datasource.dart';
+import '../../features/dashboard/data/repositories/dashboard_repository_impl.dart';
+import '../../features/dashboard/domain/repositories/dashboard_repository.dart';
+import '../../features/dashboard/domain/usecases/get_product_type_counts_usecase.dart';
+import '../../features/dashboard/domain/usecases/get_products_added_usecase.dart';
+import '../../features/dashboard/domain/usecases/get_receipts_usecase.dart';
+import '../../features/dashboard/domain/usecases/get_user_registrations_usecase.dart';
 import '../config/env.dart';
 import '../network/dio_client.dart';
 import '../network/session_expired_notifier.dart';
@@ -53,4 +60,13 @@ void setupServiceLocator({
   getIt.registerFactory(
     () => LoginBloc(loginUseCase: getIt(), authBloc: getIt()),
   );
+
+  getIt.registerLazySingleton(() => DashboardRemoteDataSource(getIt()));
+  getIt.registerLazySingleton<DashboardRepository>(
+    () => DashboardRepositoryImpl(remoteDataSource: getIt()),
+  );
+  getIt.registerFactory(() => GetUserRegistrationsUseCase(getIt()));
+  getIt.registerFactory(() => GetProductsAddedUseCase(getIt()));
+  getIt.registerFactory(() => GetReceiptsUseCase(getIt()));
+  getIt.registerFactory(() => GetProductTypeCountsUseCase(getIt()));
 }
