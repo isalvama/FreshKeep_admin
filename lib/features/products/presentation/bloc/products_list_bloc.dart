@@ -20,6 +20,9 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
   final GetCreatorLabelUseCase getCreatorLabelUseCase;
   final GetReceiptLabelUseCase getReceiptLabelUseCase;
 
+  /// What the expiration badges count from; injectable for tests.
+  final DateTime Function() today;
+
   /// Labels found this session, by id: paging through a filtered list
   /// doesn't look them up again.
   final _creatorLabels = <String, String>{};
@@ -34,7 +37,9 @@ class ProductsListBloc extends Bloc<ProductsListEvent, ProductsListState> {
     required this.getProductsUseCase,
     required this.getCreatorLabelUseCase,
     required this.getReceiptLabelUseCase,
-  }) : super(const ProductsListState(query: kDefaultProductsListQuery)) {
+    DateTime Function()? today,
+  }) : today = today ?? DateTime.now,
+       super(const ProductsListState(query: kDefaultProductsListQuery)) {
     on<ProductsListRequested>(_onRequested);
     on<ProductsListRetried>(_onRetried);
   }

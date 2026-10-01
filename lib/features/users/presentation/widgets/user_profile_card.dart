@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../domain/entities/user_details.dart';
 import 'last_login_footnote.dart';
-import 'users_table.dart';
 
 /// `USER` → "User", `ADMIN` → "Admin"; unknown roles are humanized alike.
 String roleLabel(String role) {

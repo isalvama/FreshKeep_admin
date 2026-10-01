@@ -1,3 +1,6 @@
+/// Shown where a value is missing (no username, no price, …).
+const kMissingValue = '—';
+
 const _months = [
   'Jan',
   'Feb',

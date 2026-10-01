@@ -69,15 +69,16 @@ void main() {
   testWidgets('a logged-out deep link goes to login, then back after login', (
     tester,
   ) async {
-    await pumpRouter(tester, initialLocation: '/products?x=1');
+    await pumpRouter(tester, initialLocation: '/products?type=DAIRY');
 
-    expect(location(), '/login?from=%2Fproducts%3Fx%3D1');
+    expect(location(), '/login?from=%2Fproducts%3Ftype%3DDAIRY');
 
     authBloc.add(const LoggedIn(kTestAdmin));
     await tester.pumpAndSettle();
 
-    expect(location(), '/products?x=1');
-    expect(find.text('Coming in SPEC 04'), findsOneWidget);
+    // The products list then fills in its defaults, keeping the filter.
+    expect(location(), '/products?sort=name_asc&type=DAIRY&page=1');
+    expect(find.text('Product 000'), findsOneWidget);
   });
 
   testWidgets('a logged-out section sub-page goes to login with it as from', (
@@ -111,7 +112,7 @@ void main() {
   testWidgets('session expiry sends the admin to login', (tester) async {
     await pumpRouter(
       tester,
-      initialLocation: '/products',
+      initialLocation: '/products?sort=name_asc&page=2',
       withStoredAdmin: true,
     );
 
@@ -119,7 +120,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(authBloc.state, const Unauthenticated(sessionExpired: true));
-    expect(location(), '/login?from=%2Fproducts');
+    expect(
+      location(),
+      '/login?from=${Uri.encodeComponent('/products?sort=name_asc&page=2')}',
+    );
   });
 
   testWidgets('logging out leaves no way back to a protected page', (
