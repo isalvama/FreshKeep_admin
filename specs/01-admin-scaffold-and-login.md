@@ -17,7 +17,7 @@
   - `CLAUDE.md` with the mobile app's architecture rules (Clean Architecture, BLoC/Cubit, `get_it`, `equatable`, past-tense events) and a pointer to the backend's `agents/api_contract.md`.
   - `.agents/skills/{spec,spec-impl,flutter-expert}` copied from `fresh_keep_frontend`, plus `skills-lock.json` and `.claude/skills/*` symlinks.
   - `specs/.spec-config.yml` with `AutoCreateBranch: false`.
-- **Stack:** `dio`, `flutter_bloc`, `go_router`, `fpdart`, `equatable`, `get_it`, `jwt_decoder`, `web` (for `sessionStorage`). Same SDK constraint as mobile.
+- **Stack:** `dio`, `flutter_bloc`, `go_router`, `fpdart`, `equatable`, `get_it`, `jwt_decoder`, `web` (for `sessionStorage`). SDK constraint `^3.12.0` (Flutter 3.44+), the floor the current major versions of these packages require.
 - **Config:** `Env.apiBaseUrl` from `--dart-define=API_BASE_URL`, default `http://localhost:8082`. The dev server always runs on port 5050 (`flutter run -d chrome --web-port 5050`); a VS Code launch config and README document this.
 - **URLs:** path-style via `usePathUrlStrategy()`.
 - **Shared errors:** one sealed `AdminFailure` hierarchy in `lib/core/errors/failures.dart`, with a single `DioException → AdminFailure` mapper in `lib/core/network/`.
@@ -257,6 +257,8 @@ const shellDestinations = [ /* /dashboard 02, /users 03, /products 04, /receipts
 
 - **Yes:** Separate web-only project `fresh_keep_admin`. Admin and mobile have different users, layouts and dependencies (`image_picker`, `flutter_secure_storage`), and the admin app can deploy independently.
 - **No:** An admin feature inside the mobile app. It would ship admin screens to phones and mix UX needs.
+- **Yes:** SDK constraint `^3.12.0` (Flutter 3.44+). Decided during implementation (step 7): the current major versions (`go_router` 18 in particular) require Dart 3.12, so mobile's `^3.9.2` would only hold on paper. Both apps already run on Flutter 3.44 locally.
+- **No:** Pinning older majors (e.g. `go_router` ^17) to keep mobile's 3.9 floor. It would start the new project on outdated APIs for a constraint nobody is relying on.
 - **Yes:** Reuse the mobile stack as-is (Clean Architecture, BLoC, `get_it`, `go_router`, `dio`, `fpdart`, `equatable`, hand-written test fakes), so both apps read the same way.
 - **Yes:** JWT in `sessionStorage` behind a `SessionStorage` interface. It survives reloads and is cleared on tab close, which suits a privileged session, and it can be faked in tests.
 - **No:** `flutter_secure_storage` on web. It's localStorage plus obfuscation, which adds no real security, and the session would outlive the tab.

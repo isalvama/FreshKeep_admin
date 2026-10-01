@@ -11,10 +11,9 @@ class AuthInterceptor extends Interceptor {
   final SessionExpiredNotifier _sessionExpiredNotifier;
 
   AuthInterceptor({
-    required SessionStorage sessionStorage,
-    required SessionExpiredNotifier sessionExpiredNotifier,
-  }) : _sessionStorage = sessionStorage,
-       _sessionExpiredNotifier = sessionExpiredNotifier;
+    required this._sessionStorage,
+    required this._sessionExpiredNotifier,
+  });
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {

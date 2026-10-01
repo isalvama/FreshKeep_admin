@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_keep_admin/core/network/session_expired_notifier.dart';
 import 'package:fresh_keep_admin/features/auth/domain/usecases/get_current_admin_usecase.dart';
+import 'package:fresh_keep_admin/features/auth/domain/usecases/login_usecase.dart';
 import 'package:fresh_keep_admin/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:fresh_keep_admin/features/auth/presentation/bloc/auth_bloc.dart';
+import 'package:fresh_keep_admin/features/auth/presentation/bloc/login_bloc.dart';
 import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
@@ -12,6 +15,7 @@ import '../fakes/fake_auth_repository.dart';
 void main() {
   late SessionExpiredNotifier notifier;
   late AuthBloc authBloc;
+  late LoginBloc loginBloc;
   late GoRouter router;
 
   Future<void> pumpRouter(
@@ -28,8 +32,21 @@ void main() {
       logoutUseCase: LogoutUseCase(repository),
       sessionExpiredNotifier: notifier,
     );
+    loginBloc = LoginBloc(
+      loginUseCase: LoginUseCase(repository),
+      authBloc: authBloc,
+    );
     router = buildAppRouter(authBloc, initialLocation: initialLocation);
-    await tester.pumpWidget(MaterialApp.router(routerConfig: router));
+    // Same providers as App: the login page needs both blocs.
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: authBloc),
+          BlocProvider.value(value: loginBloc),
+        ],
+        child: MaterialApp.router(routerConfig: router),
+      ),
+    );
     authBloc.add(const AppStarted());
     await tester.pumpAndSettle();
   }
@@ -39,6 +56,7 @@ void main() {
 
   tearDown(() async {
     router.dispose();
+    await loginBloc.close();
     await authBloc.close();
     await notifier.dispose();
   });

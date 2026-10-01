@@ -4,7 +4,7 @@ Web-only Flutter admin app for Fresh Keep. It logs in ADMIN accounts against the
 
 ## Requirements
 
-- Flutter via [FVM](https://fvm.app) (`fvm flutter …`). The SDK constraint is `^3.9.2`.
+- Flutter via [FVM](https://fvm.app) (`fvm flutter …`). Requires Flutter 3.44+ (Dart 3.12+, `sdk: ^3.12.0`) — `go_router` 18 needs it.
 - The Fresh Keep backend (`../fresh-keep_backend`) **including SPEC 00** (`specs/00-admin-enablement.md`). Older backends return 500 on every admin login.
 - An admin account. On a fresh database, set `ADMIN_BOOTSTRAP_EMAIL` and `ADMIN_BOOTSTRAP_PASSWORD` in the backend's `.env` so it creates the first admin at startup.
 
