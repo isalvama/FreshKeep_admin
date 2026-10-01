@@ -43,7 +43,7 @@
   - One series color for every chart, validated with the dataviz skill's `validate_palette.js` against the card surface.
   - Thin marks with rounded data ends, a recessive grid and axes, and text in text colors (never the series color).
   - No legends: each chart has one series and its title names it.
-- **Dependency:** `fl_chart` for the charts.
+- **Dependency:** `fl_chart` for the daily column charts. The product-type chart is plain Flutter widgets (see Decisions).
 - **Tests:** repository (fake HTTP adapter), zero-fill and range logic, bloc, URL ↔ range parsing, and widget tests for the page states, the toggle and the picker validation.
 
 **Out of scope (for future specs):**
@@ -280,6 +280,8 @@ The exact value is decided in step 5 by running the validator. The chosen hex an
 - **Yes:** Drop stale responses after a quick range change by comparing against the current range, rather than adding `bloc_concurrency`.
 - **Yes:** `fl_chart`. It's pure Flutter and MIT-licensed, with bar charts and tooltips that work on web.
 - **No:** `syncfusion_flutter_charts` (commercial license), or `CustomPainter` (tooltips, axes and hit-testing all built by hand).
+- **Yes:** The horizontal "Products by type" chart is plain Flutter widgets (one row per type: label, bar scaled to the largest count, value at the bar's end). This was decided during implementation (step 7): `fl_chart` has no native horizontal bars, only `rotationQuarterTurns`, which needs fixed label widths and can only show every value by forcing all tooltips open.
+- **No:** A rotated `fl_chart` `BarChart` for product types.
 - **Yes:** `equatable` goes back from `^3.0.0` to `^2.1.0`. This was decided during implementation (step 1): every `fl_chart` version requires `equatable ^2`. The app only uses `props`, and all SPEC 01 tests pass on 2.1. Mobile is on the 2.x line too.
 - **No:** `dependency_overrides` to keep `equatable` 3 under `fl_chart`. It's an unsupported combination that every upgrade would have to keep working.
 - **Yes:** `spaceId` / `creatorId` filters deferred. There's no admin endpoint to list spaces to pick from.
