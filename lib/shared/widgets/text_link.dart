@@ -6,7 +6,15 @@ class TextLink extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const TextLink({super.key, required this.text, required this.onPressed});
+  /// Merged under the link's own color and underline.
+  final TextStyle? style;
+
+  const TextLink({
+    super.key,
+    required this.text,
+    required this.onPressed,
+    this.style,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +28,10 @@ class TextLink extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(decoration: TextDecoration.underline),
+        overflow: TextOverflow.ellipsis,
+        style: (style ?? const TextStyle()).copyWith(
+          decoration: TextDecoration.underline,
+        ),
       ),
     );
   }

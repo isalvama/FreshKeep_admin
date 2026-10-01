@@ -22,6 +22,8 @@ import '../../../../fakes/fake_dashboard_repository.dart';
 import '../../../../fakes/fake_users_repository.dart';
 import '../../../../fakes/test_route_dependencies.dart';
 
+const _uuidUser = '0b1c2d3e-4f50-4a6b-8c7d-9e0f1a2b3c4d';
+
 void main() {
   late FakeUsersRepository users;
   late FakeDashboardRepository metrics;
@@ -270,6 +272,7 @@ void main() {
 
     expect(find.text('User not found'), findsOneWidget);
     expect(find.text('Back to users'), findsOneWidget);
+    expect(find.text('View products'), findsNothing);
     expect(find.byType(BarChart), findsNothing);
     expect(find.text('Spaces'), findsNothing);
   });
@@ -320,5 +323,17 @@ void main() {
       tester.getTopLeft(find.text('Spaces')).dy,
       greaterThan(tester.getTopLeft(find.text('user1@example.com')).dy),
     );
+  });
+
+  testWidgets('"View products" opens the products this user added', (
+    tester,
+  ) async {
+    await pumpDetail(tester, location: '/users/$_uuidUser');
+
+    await tester.tap(find.text('View products'));
+    await tester.pumpAndSettle();
+
+    expect(location(), '/products?sort=name_asc&creatorId=$_uuidUser&page=1');
+    expect(find.text('Added by alice@example.com'), findsOneWidget);
   });
 }

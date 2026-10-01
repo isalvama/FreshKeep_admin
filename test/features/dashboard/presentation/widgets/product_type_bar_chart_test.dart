@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fresh_keep_admin/core/theme/chart_colors.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/entities/product_type_count.dart';
 import 'package:fresh_keep_admin/features/dashboard/presentation/widgets/product_type_bar_chart.dart';
+import 'package:fresh_keep_admin/shared/widgets/text_link.dart';
 
 Future<void> _pump(WidgetTester tester, Widget chart) async {
   tester.view.physicalSize = const Size(1000, 600);
@@ -72,6 +74,33 @@ void main() {
 
       await tester.scrollUntilVisible(find.text('Type 16'), 100);
       expect(find.text('Type 16'), findsOneWidget);
+    });
+
+    testWidgets('labels are plain text without onTypeSelected', (tester) async {
+      await _pump(tester, const ProductTypeBarChart(counts: counts));
+
+      expect(find.byType(TextLink), findsNothing);
+    });
+
+    testWidgets('with onTypeSelected, labels are links that pass the raw '
+        'type, by click or keyboard', (tester) async {
+      final selected = <String>[];
+      await _pump(
+        tester,
+        ProductTypeBarChart(counts: counts, onTypeSelected: selected.add),
+      );
+
+      expect(find.byType(TextLink), findsNWidgets(3));
+      await tester.tap(find.text('Other fresh products'));
+      await tester.pump();
+
+      // Tab to the first link (Dairy) and press Enter.
+      await tester.sendKeyEvent(LogicalKeyboardKey.tab);
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+
+      expect(selected, ['OTHER_FRESH_PRODUCTS', 'DAIRY']);
     });
   });
 }

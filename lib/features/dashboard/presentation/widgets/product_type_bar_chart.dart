@@ -3,8 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/chart_colors.dart';
-import '../../domain/entities/product_type_count.dart';
 import '../../../../shared/metrics/presentation/format.dart';
+import '../../../../shared/widgets/text_link.dart';
+import '../../domain/entities/product_type_count.dart';
 
 const _labelWidth = 168.0;
 const _valueWidth = 56.0;
@@ -18,7 +19,14 @@ const _barHeight = 14.0;
 class ProductTypeBarChart extends StatelessWidget {
   final List<ProductTypeCount> counts;
 
-  const ProductTypeBarChart({super.key, required this.counts});
+  /// When set, each type's label is a link that receives the raw type.
+  final ValueChanged<String>? onTypeSelected;
+
+  const ProductTypeBarChart({
+    super.key,
+    required this.counts,
+    this.onTypeSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +44,21 @@ class ProductTypeBarChart extends StatelessWidget {
             children: [
               SizedBox(
                 width: _labelWidth,
-                child: Text(
-                  count.label,
-                  style: textTheme.bodySmall,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                child: onTypeSelected == null
+                    ? Text(
+                        count.label,
+                        style: textTheme.bodySmall,
+                        overflow: TextOverflow.ellipsis,
+                      )
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: TextLink(
+                          key: ValueKey('type-link-${count.productType}'),
+                          text: count.label,
+                          style: textTheme.bodySmall,
+                          onPressed: () => onTypeSelected!(count.productType),
+                        ),
+                      ),
               ),
               Expanded(
                 child: LayoutBuilder(
