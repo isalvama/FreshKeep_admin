@@ -15,6 +15,14 @@ import '../../features/dashboard/data/repositories/dashboard_repository_impl.dar
 import '../../features/dashboard/domain/repositories/dashboard_repository.dart';
 import '../../features/dashboard/domain/usecases/get_product_type_counts_usecase.dart';
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import '../../features/products/data/datasources/products_remote_datasource.dart';
+import '../../features/products/data/repositories/products_repository_impl.dart';
+import '../../features/products/domain/repositories/products_repository.dart';
+import '../../features/products/domain/usecases/get_creator_label_usecase.dart';
+import '../../features/products/domain/usecases/get_product_details_usecase.dart';
+import '../../features/products/domain/usecases/get_products_usecase.dart';
+import '../../features/products/domain/usecases/get_receipt_label_usecase.dart';
+import '../../features/products/presentation/products_list_location.dart';
 import '../../features/users/data/datasources/users_remote_datasource.dart';
 import '../../features/users/data/repositories/users_repository_impl.dart';
 import '../../features/users/domain/repositories/users_repository.dart';
@@ -111,4 +119,14 @@ void setupServiceLocator({
       getReceiptsUseCase: getIt(),
     ),
   );
+
+  getIt.registerLazySingleton(() => ProductsRemoteDataSource(getIt()));
+  getIt.registerLazySingleton<ProductsRepository>(
+    () => ProductsRepositoryImpl(remoteDataSource: getIt()),
+  );
+  getIt.registerFactory(() => GetProductsUseCase(getIt()));
+  getIt.registerFactory(() => GetProductDetailsUseCase(getIt()));
+  getIt.registerFactory(() => GetCreatorLabelUseCase(getIt()));
+  getIt.registerFactory(() => GetReceiptLabelUseCase(getIt()));
+  getIt.registerLazySingleton(ProductsListLocation.new);
 }
