@@ -12,6 +12,7 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../fakes/fake_auth_repository.dart';
+import '../../../../fakes/fake_dashboard_repository.dart';
 import '../../../../fakes/jwt_factory.dart';
 
 void main() {
@@ -42,7 +43,11 @@ void main() {
       loginUseCase: LoginUseCase(repository),
       authBloc: authBloc,
     );
-    router = buildAppRouter(authBloc, initialLocation: initialLocation);
+    router = buildAppRouter(
+      authBloc,
+      initialLocation: initialLocation,
+      dashboardBlocFactory: buildTestDashboardBloc,
+    );
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
@@ -150,11 +155,13 @@ void main() {
       expect(rail(tester).selectedIndex, 3);
     });
 
-    testWidgets('each section shows its spec placeholder', (tester) async {
+    testWidgets('each unbuilt section shows its spec placeholder', (
+      tester,
+    ) async {
       await pumpShell(tester);
 
+      // The dashboard is built (SPEC 02); the rest are placeholders.
       for (final (path, spec) in [
-        ('/dashboard', '02'),
         ('/users', '03'),
         ('/products', '04'),
         ('/receipts', '05'),
