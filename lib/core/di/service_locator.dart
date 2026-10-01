@@ -18,7 +18,6 @@ import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../../features/products/data/datasources/products_remote_datasource.dart';
 import '../../features/products/data/repositories/products_repository_impl.dart';
 import '../../features/products/domain/repositories/products_repository.dart';
-import '../../features/products/domain/usecases/get_creator_label_usecase.dart';
 import '../../features/products/domain/usecases/get_product_details_usecase.dart';
 import '../../features/products/domain/usecases/get_products_usecase.dart';
 import '../../features/products/domain/usecases/get_receipt_label_usecase.dart';
@@ -33,6 +32,10 @@ import '../../features/users/domain/usecases/get_users_usecase.dart';
 import '../../features/users/presentation/bloc/user_detail_bloc.dart';
 import '../../features/users/presentation/bloc/users_list_bloc.dart';
 import '../../features/users/presentation/users_list_location.dart';
+import '../../shared/creators/data/creator_label_remote_datasource.dart';
+import '../../shared/creators/data/creator_label_repository_impl.dart';
+import '../../shared/creators/domain/creator_label_repository.dart';
+import '../../shared/creators/domain/get_creator_label_usecase.dart';
 import '../../shared/metrics/data/datasources/metrics_remote_datasource.dart';
 import '../../shared/metrics/data/repositories/metrics_repository_impl.dart';
 import '../../shared/metrics/domain/repositories/metrics_repository.dart';
@@ -122,13 +125,18 @@ void setupServiceLocator({
     ),
   );
 
+  getIt.registerLazySingleton(() => CreatorLabelRemoteDataSource(getIt()));
+  getIt.registerLazySingleton<CreatorLabelRepository>(
+    () => CreatorLabelRepositoryImpl(remoteDataSource: getIt()),
+  );
+  getIt.registerFactory(() => GetCreatorLabelUseCase(getIt()));
+
   getIt.registerLazySingleton(() => ProductsRemoteDataSource(getIt()));
   getIt.registerLazySingleton<ProductsRepository>(
     () => ProductsRepositoryImpl(remoteDataSource: getIt()),
   );
   getIt.registerFactory(() => GetProductsUseCase(getIt()));
   getIt.registerFactory(() => GetProductDetailsUseCase(getIt()));
-  getIt.registerFactory(() => GetCreatorLabelUseCase(getIt()));
   getIt.registerFactory(() => GetReceiptLabelUseCase(getIt()));
   getIt.registerLazySingleton(ProductsListLocation.new);
   getIt.registerFactory(

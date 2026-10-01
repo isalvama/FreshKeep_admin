@@ -20,9 +20,6 @@ abstract class ProductsRepository {
   /// the backend answers 400 for both.
   Future<Either<AdminFailure, ProductDetails>> getProduct(String productId);
 
-  /// The email of the user (`users.id`), for the creator filter chip.
-  Future<Either<AdminFailure, String>> getCreatorEmail(String userId);
-
   /// The store and purchase date of a receipt, for the receipt filter chip.
   Future<Either<AdminFailure, ReceiptLabel>> getReceiptLabel(String receiptId);
 }

@@ -12,7 +12,7 @@ import 'package:fresh_keep_admin/features/auth/presentation/bloc/login_bloc.dart
 import 'package:fresh_keep_admin/features/products/domain/entities/product_details.dart';
 import 'package:fresh_keep_admin/features/products/presentation/pages/product_detail_page.dart';
 import 'package:fresh_keep_admin/features/products/presentation/products_list_location.dart';
-import 'package:fresh_keep_admin/features/products/presentation/widgets/expiration_cell.dart';
+import 'package:fresh_keep_admin/shared/products/widgets/expiration_cell.dart';
 import 'package:fresh_keep_admin/features/products/presentation/widgets/product_origin_card.dart';
 import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:fresh_keep_admin/shared/metrics/presentation/format.dart';

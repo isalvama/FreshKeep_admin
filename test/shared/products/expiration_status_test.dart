@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fresh_keep_admin/features/products/domain/utils/expiration_status.dart';
+import 'package:fresh_keep_admin/shared/products/expiration_status.dart';
 
 void main() {
   // Late evening local time: only the date part may count.

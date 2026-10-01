@@ -1,10 +1,11 @@
 import 'package:fpdart/fpdart.dart';
 
-import '../../../../core/errors/failures.dart';
-import '../repositories/products_repository.dart';
+import '../../../core/errors/failures.dart';
+import 'creator_label_repository.dart';
 
+/// The email shown on a "Added by …" filter chip.
 class GetCreatorLabelUseCase {
-  final ProductsRepository repository;
+  final CreatorLabelRepository repository;
 
   const GetCreatorLabelUseCase(this.repository);
 

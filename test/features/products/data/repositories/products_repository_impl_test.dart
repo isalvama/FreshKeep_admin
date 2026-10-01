@@ -4,13 +4,12 @@ import 'package:fresh_keep_admin/core/errors/failures.dart';
 import 'package:fresh_keep_admin/core/network/dio_failure_mapper.dart';
 import 'package:fresh_keep_admin/features/products/data/datasources/products_remote_datasource.dart';
 import 'package:fresh_keep_admin/features/products/data/repositories/products_repository_impl.dart';
-import 'package:fresh_keep_admin/features/products/domain/entities/money.dart';
+import 'package:fresh_keep_admin/shared/products/money.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_details.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_filters.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_sort.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_summary.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/receipt_label.dart';
-import 'package:fresh_keep_admin/features/products/domain/usecases/get_creator_label_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_product_details_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_products_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_receipt_label_usecase.dart';
@@ -231,18 +230,6 @@ void main() {
   });
 
   group('chip lookups', () {
-    test('getCreatorEmail reads the email from the user details', () async {
-      final adapter = JsonResponseAdapter(
-        statusCode: 200,
-        body: {'id': 'u-1', 'email': 'alice@example.com', 'roles': []},
-      );
-
-      final result = await GetCreatorLabelUseCase(_repository(adapter))('u-1');
-
-      expect(adapter.requests.single.path, '/api/v1/admin/users/u-1');
-      expect(result.getRight().toNullable(), 'alice@example.com');
-    });
-
     test('getReceiptLabel reads the store and purchase date', () async {
       final adapter = JsonResponseAdapter(
         statusCode: 200,
@@ -348,11 +335,6 @@ void main() {
         ),
       ).getProduct('p-1')).getLeft().toNullable();
       expect(details, isA<ServerFailure>());
-
-      final email = (await _repository(
-        JsonResponseAdapter(statusCode: 200, body: {'id': 'u-1'}),
-      ).getCreatorEmail('u-1')).getLeft().toNullable();
-      expect(email, isA<ServerFailure>());
     });
   });
 }

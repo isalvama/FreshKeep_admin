@@ -2,13 +2,14 @@ import 'dart:async';
 
 import 'package:fpdart/fpdart.dart';
 import 'package:fresh_keep_admin/core/errors/failures.dart';
-import 'package:fresh_keep_admin/features/products/domain/entities/money.dart';
+import 'package:fresh_keep_admin/shared/products/money.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_details.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_filters.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_summary.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/products_page.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/receipt_label.dart';
 import 'package:fresh_keep_admin/features/products/domain/repositories/products_repository.dart';
+import 'package:fresh_keep_admin/shared/creators/domain/creator_label_repository.dart';
 
 const kTestCreatorId = '3f2a9c1e-0b4d-4e8a-9f61-2c7d5e8b1a04';
 const kTestReceiptId = 'd5b3e9c2-1111-4222-8333-944455556666';
@@ -18,7 +19,10 @@ const kTestReceiptId = 'd5b3e9c2-1111-4222-8333-944455556666';
 /// Each kind of call can be held (`hold…`): it then waits in the matching
 /// `held…` list until a test completes it, in any order. Answers are read on
 /// release, so a test can change them before completing a held call.
-class FakeProductsRepository implements ProductsRepository {
+/// Also answers the shared creator-label lookup, so products tests drive the
+/// creator chip through the same fake.
+class FakeProductsRepository
+    implements ProductsRepository, CreatorLabelRepository {
   Either<AdminFailure, ProductsPage> Function(ProductFilters filters, int page)
   productsPage = (filters, page) => Right(testProductsPage(page: page));
   Either<AdminFailure, ProductDetails> details = Right(testProductDetails());

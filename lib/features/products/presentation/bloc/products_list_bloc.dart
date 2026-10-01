@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../shared/metrics/presentation/section_state.dart';
 import '../../domain/entities/products_page.dart';
 import '../../domain/entities/receipt_label.dart';
-import '../../domain/usecases/get_creator_label_usecase.dart';
+import '../../../../shared/creators/domain/get_creator_label_usecase.dart';
 import '../../domain/usecases/get_products_usecase.dart';
 import '../../domain/usecases/get_receipt_label_usecase.dart';
 import '../products_list_query.dart';

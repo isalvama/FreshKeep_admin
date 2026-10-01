@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../../shared/metrics/presentation/format.dart';
-import '../../domain/utils/expiration_status.dart';
+import '../../metrics/presentation/format.dart';
+import '../expiration_status.dart';
 
 const kExpiredLabel = 'Expired';
 const kExpiresSoonLabel = 'Expires soon';

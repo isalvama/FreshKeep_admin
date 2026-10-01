@@ -1,12 +1,11 @@
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/admin_api_paths.dart';
 import '../../../../shared/metrics/domain/entities/date_range.dart';
 import '../../../../shared/metrics/domain/utils/calendar_day.dart';
 import '../../domain/repositories/users_repository.dart';
 import '../models/user_details_model.dart';
 import '../models/users_page_model.dart';
-
-const kUsersPath = '/api/v1/admin/users';
 
 class UsersRemoteDataSource {
   final Dio dio;
@@ -18,7 +17,7 @@ class UsersRemoteDataSource {
     required int page,
   }) async {
     final response = await dio.get(
-      kUsersPath,
+      kAdminUsersApiPath,
       queryParameters: {
         'from': isoDate(registeredBetween.from),
         'to': isoDate(registeredBetween.to),
@@ -33,7 +32,7 @@ class UsersRemoteDataSource {
     // The id comes from the URL bar: encode it so it can only ever be one
     // path segment (e.g. "../products" can't reach another endpoint).
     final response = await dio.get(
-      '$kUsersPath/${Uri.encodeComponent(userId)}',
+      '$kAdminUsersApiPath/${Uri.encodeComponent(userId)}',
     );
     return UserDetailsModel.fromJson(response.data as Map<String, dynamic>);
   }

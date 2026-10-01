@@ -1,4 +1,4 @@
-import '../domain/entities/money.dart';
+import 'money.dart';
 
 /// `2.50 USD`: always two decimals, with the currency code.
 String formatMoney(Money money) =>

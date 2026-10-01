@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../../../shared/products/product_type.dart';
 import '../../domain/entities/product_details.dart';
-import '../format_money.dart';
+import '../../../../shared/products/format_money.dart';
 import 'detail_field.dart';
-import 'expiration_cell.dart';
+import '../../../../shared/products/widgets/expiration_cell.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductDetails product;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../shared/creators/creator_filter_chip.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../../../shared/metrics/presentation/section_state.dart';
 import '../../../../shared/products/product_type.dart';
@@ -17,16 +18,6 @@ String productSortLabel(ProductSort sort) => switch (sort) {
   ProductSort.priceAsc => 'Price low–high',
   ProductSort.priceDesc => 'Price high–low',
 };
-
-/// `3f2a9c1e…`: what a chip shows when its label couldn't be looked up.
-String shortId(String id) => id.length <= 8 ? id : '${id.substring(0, 8)}…';
-
-String creatorChipLabel(String creatorId, SectionState<String>? label) =>
-    switch (label?.status) {
-      SectionStatus.loaded => 'Added by ${label!.data}',
-      SectionStatus.failure => 'Added by ${shortId(creatorId)}',
-      _ => 'Added by …',
-    };
 
 String receiptChipLabel(String receiptId, SectionState<ReceiptLabel>? label) {
   switch (label?.status) {
@@ -134,11 +125,9 @@ class ProductsControls extends StatelessWidget {
           ),
         ),
         if (creatorId != null)
-          InputChip(
-            key: const Key('creator-chip'),
-            avatar: const Icon(Icons.person_outline, size: 18),
-            label: Text(creatorChipLabel(creatorId, creatorLabel)),
-            deleteButtonTooltipMessage: 'Remove creator filter',
+          CreatorFilterChip(
+            creatorId: creatorId,
+            label: creatorLabel,
             onDeleted: () => onFiltersChanged(_with(creatorId: () => null)),
           ),
         if (receiptId != null)

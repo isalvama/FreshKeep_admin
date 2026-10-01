@@ -1,13 +1,10 @@
 import 'package:dio/dio.dart';
 
+import '../../../../core/network/admin_api_paths.dart';
 import '../../domain/entities/product_filters.dart';
 import '../models/product_details_model.dart';
 import '../models/product_summary_model.dart';
 import '../models/receipt_label_model.dart';
-
-const kProductsApiPath = '/api/v1/admin/products';
-const kAdminUsersApiPath = '/api/v1/admin/users';
-const kShoppingReceiptsApiPath = '/api/v1/admin/shopping-receipts';
 
 class ProductsRemoteDataSource {
   final Dio dio;
@@ -20,7 +17,7 @@ class ProductsRemoteDataSource {
     required int size,
   }) async {
     final response = await dio.get(
-      kProductsApiPath,
+      kAdminProductsApiPath,
       queryParameters: {
         'sort': filters.sort.backendValue,
         'page': page,
@@ -41,21 +38,14 @@ class ProductsRemoteDataSource {
 
   Future<ProductDetailsModel> getProduct(String productId) async {
     final response = await dio.get(
-      '$kProductsApiPath/${Uri.encodeComponent(productId)}',
+      '$kAdminProductsApiPath/${Uri.encodeComponent(productId)}',
     );
     return ProductDetailsModel.fromJson(response.data as Map<String, dynamic>);
   }
 
-  Future<String> getUserEmail(String userId) async {
-    final response = await dio.get(
-      '$kAdminUsersApiPath/${Uri.encodeComponent(userId)}',
-    );
-    return (response.data as Map<String, dynamic>)['email'] as String;
-  }
-
   Future<ReceiptLabelModel> getReceiptLabel(String receiptId) async {
     final response = await dio.get(
-      '$kShoppingReceiptsApiPath/${Uri.encodeComponent(receiptId)}',
+      '$kAdminShoppingReceiptsApiPath/${Uri.encodeComponent(receiptId)}',
     );
     return ReceiptLabelModel.fromJson(response.data as Map<String, dynamic>);
   }
