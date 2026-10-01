@@ -18,3 +18,6 @@ DateTime readCalendarDay(Object? value) {
   if (day == null) throw FormatException('Expected yyyy-MM-dd, got $value');
   return day;
 }
+
+DateTime? readOptionalCalendarDay(Object? value) =>
+    value == null ? null : readCalendarDay(value);
