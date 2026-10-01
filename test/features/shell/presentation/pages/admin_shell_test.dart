@@ -12,6 +12,7 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../fakes/fake_auth_repository.dart';
+import '../../../../fakes/test_route_dependencies.dart';
 import '../../../../fakes/jwt_factory.dart';
 
 void main() {
@@ -42,7 +43,11 @@ void main() {
       loginUseCase: LoginUseCase(repository),
       authBloc: authBloc,
     );
-    router = buildAppRouter(authBloc, initialLocation: initialLocation);
+    router = buildAppRouter(
+      authBloc,
+      initialLocation: initialLocation,
+      dependencies: testRouteDependencies(),
+    );
     await tester.pumpWidget(
       MultiBlocProvider(
         providers: [
@@ -138,7 +143,8 @@ void main() {
       await tester.tap(inRail(find.text('Users')));
       await tester.pumpAndSettle();
 
-      expect(location(), '/users');
+      // The users list then normalizes its missing range and page (SPEC 03).
+      expect(location(), '/users?range=30d&page=1');
       expect(rail(tester).selectedIndex, 1);
     });
 
@@ -150,16 +156,14 @@ void main() {
       expect(rail(tester).selectedIndex, 3);
     });
 
-    testWidgets('each section shows its spec placeholder', (tester) async {
+    testWidgets('each unbuilt section shows its spec placeholder', (
+      tester,
+    ) async {
       await pumpShell(tester);
 
-      for (final (path, spec) in [
-        ('/dashboard', '02'),
-        ('/users', '03'),
-        ('/products', '04'),
-        ('/receipts', '05'),
-        ('/admins', '06'),
-      ]) {
+      // Dashboard (SPEC 02), users (SPEC 03) and products (SPEC 04) are
+      // built; the rest are placeholders.
+      for (final (path, spec) in [('/receipts', '05'), ('/admins', '06')]) {
         router.go(path);
         await tester.pumpAndSettle();
 

@@ -34,7 +34,7 @@ Things that are easy to get wrong:
 - The JWT `roles` claim carries the `ROLE_` prefix (`["ROLE_ADMIN"]`).
 - `expiresIn` in the login response is the raw config value, not a countdown. Use the token's `exp` claim for expiry.
 - The backend maps "entity not found" on admin detail endpoints to **400**, not 404.
-- `GET /admin/users` paging is **1-based**; `GET /admin/products` paging is **0-based**.
+- Admin paging is **1-based** on both `GET /admin/users` and `GET /admin/products`. (`/products` treats a `page` of `0` as the first page too; its request model still allows `0`.) `GET /admin/products` returns a plain list with no total.
 - Admin login requires backend SPEC 00 (`../fresh-keep_backend/specs/00-admin-enablement.md`). Without it, any admin login returns 500.
 
 ## Spec workflow
