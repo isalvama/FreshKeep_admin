@@ -20,6 +20,7 @@ import '../../features/users/data/repositories/users_repository_impl.dart';
 import '../../features/users/domain/repositories/users_repository.dart';
 import '../../features/users/domain/usecases/get_user_details_usecase.dart';
 import '../../features/users/domain/usecases/get_users_usecase.dart';
+import '../../features/users/presentation/users_list_location.dart';
 import '../../shared/metrics/data/datasources/metrics_remote_datasource.dart';
 import '../../shared/metrics/data/repositories/metrics_repository_impl.dart';
 import '../../shared/metrics/domain/repositories/metrics_repository.dart';
@@ -99,4 +100,5 @@ void setupServiceLocator({
   );
   getIt.registerFactory(() => GetUsersUseCase(getIt()));
   getIt.registerFactory(() => GetUserDetailsUseCase(getIt()));
+  getIt.registerLazySingleton(UsersListLocation.new);
 }
