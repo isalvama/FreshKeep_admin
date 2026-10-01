@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/theme/chart_colors.dart';
 import '../../domain/entities/product_type_count.dart';
-import '../format/dashboard_format.dart';
+import '../../../../shared/metrics/presentation/format.dart';
 
 const _labelWidth = 168.0;
 const _valueWidth = 56.0;

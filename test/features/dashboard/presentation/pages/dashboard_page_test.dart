@@ -10,15 +10,16 @@ import 'package:fresh_keep_admin/features/auth/domain/usecases/login_usecase.dar
 import 'package:fresh_keep_admin/features/auth/domain/usecases/logout_usecase.dart';
 import 'package:fresh_keep_admin/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:fresh_keep_admin/features/auth/presentation/bloc/login_bloc.dart';
-import 'package:fresh_keep_admin/features/dashboard/domain/entities/daily_count.dart';
+import 'package:fresh_keep_admin/shared/metrics/domain/entities/daily_count.dart';
 import 'package:fresh_keep_admin/features/dashboard/domain/entities/product_type_count.dart';
-import 'package:fresh_keep_admin/features/dashboard/presentation/widgets/chart_card.dart';
-import 'package:fresh_keep_admin/features/dashboard/presentation/widgets/stat_tile.dart';
+import 'package:fresh_keep_admin/shared/metrics/presentation/widgets/chart_card.dart';
+import 'package:fresh_keep_admin/shared/metrics/presentation/widgets/stat_tile.dart';
 import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../fakes/fake_auth_repository.dart';
 import '../../../../fakes/fake_dashboard_repository.dart';
+import '../../../../fakes/test_route_dependencies.dart';
 
 void main() {
   late FakeDashboardRepository repository;
@@ -67,8 +68,7 @@ void main() {
     router = buildAppRouter(
       authBloc,
       initialLocation: location,
-      dashboardBlocFactory: () =>
-          buildTestDashboardBloc(repository: repository),
+      dependencies: testRouteDependencies(dashboard: repository),
     );
     await tester.pumpWidget(
       MultiBlocProvider(

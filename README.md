@@ -45,6 +45,8 @@ fvm flutter test
 
 **Dashboard days near midnight.** The dashboard's ranges end on *your browser's* local date. The backend groups activity into days in *its database's* timezone. If they differ, the last day's column can be off by one near midnight.
 
+**Users list days near midnight.** "Registered between" uses the same browser-local dates. The backend turns them into day boundaries in its own (JVM) timezone, while registration times show in your local time. A user registered close to midnight can appear one day off from the range you picked.
+
 ## Deployment notes
 
 The app uses path URLs (`/users/…`, no `#`). Any static host must serve `index.html` for every path (an SPA rewrite rule). Without it, reloading a deep link returns 404. Hosting and deployment configuration are not set up yet.

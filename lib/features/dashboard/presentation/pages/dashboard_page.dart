@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../domain/entities/daily_count.dart';
-import '../../domain/entities/dashboard_range.dart';
+import '../../../../shared/metrics/domain/entities/daily_count.dart';
+import '../../../../shared/metrics/domain/entities/selected_range.dart';
 import '../bloc/dashboard_bloc.dart';
-import '../dashboard_query.dart';
-import '../format/dashboard_format.dart';
-import '../widgets/chart_card.dart';
-import '../widgets/counts_table.dart';
-import '../widgets/daily_column_chart.dart';
-import '../widgets/dashboard_range_bar.dart';
+import '../../../../shared/metrics/domain/entities/date_range.dart';
+import '../../../../shared/metrics/presentation/range_query.dart';
+import '../../../../shared/metrics/presentation/section_state.dart';
+import '../../../../shared/metrics/presentation/format.dart';
+import '../../../../shared/metrics/presentation/widgets/chart_card.dart';
+import '../../../../shared/metrics/presentation/widgets/counts_table.dart';
+import '../../../../shared/metrics/presentation/widgets/daily_column_chart.dart';
+import '../../../../shared/metrics/presentation/widgets/range_bar.dart';
 import '../widgets/product_type_bar_chart.dart';
-import '../widgets/stat_tile.dart';
+import '../../../../shared/metrics/presentation/widgets/stat_tile.dart';
 
 const kDashboardPath = '/dashboard';
 
@@ -45,22 +47,24 @@ class _DashboardPageState extends State<DashboardPage> {
 
   void _syncRangeFromUrl() {
     final bloc = context.read<DashboardBloc>();
-    final range = parseDashboardRange(widget.query, bloc.today());
+    final range = parseRangeQuery(
+      widget.query,
+      bloc.today(),
+      maxLengthInDays: kMetricsMaxRangeLengthInDays,
+    );
     if (range == null) {
       // Missing or invalid: replace (not push) so the bad URL leaves no
       // history entry. The corrected URL comes back through didUpdateWidget.
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.replace(_location(kDefaultDashboardRange));
+        if (mounted) context.replace(_location(kDefaultSelectedRange));
       });
       return;
     }
     bloc.add(DashboardRangeChanged(range));
   }
 
-  static String _location(DashboardRange range) => Uri(
-    path: kDashboardPath,
-    queryParameters: dashboardRangeQuery(range),
-  ).toString();
+  static String _location(SelectedRange range) =>
+      Uri(path: kDashboardPath, queryParameters: rangeQuery(range)).toString();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +77,8 @@ class _DashboardPageState extends State<DashboardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              DashboardRangeBar(
+              RangeBar(
+                maxLengthInDays: kMetricsMaxRangeLengthInDays,
                 range: state.range,
                 resolvedRange: state.resolvedRange,
                 today: bloc.today(),

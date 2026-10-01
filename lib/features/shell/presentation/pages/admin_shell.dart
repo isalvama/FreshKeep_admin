@@ -22,9 +22,7 @@ class AdminShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final path = GoRouterState.of(context).uri.path;
-    final selectedIndex = shellDestinations.indexWhere(
-      (d) => path == d.path || path.startsWith('${d.path}/'),
-    );
+    final selectedIndex = shellDestinations.indexWhere((d) => d.matches(path));
     final selected = selectedIndex == -1
         ? null
         : shellDestinations[selectedIndex];

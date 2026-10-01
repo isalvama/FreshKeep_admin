@@ -2,33 +2,8 @@ part of 'dashboard_bloc.dart';
 
 enum DashboardSection { registrations, products, receipts, productTypes }
 
-enum SectionStatus { loading, loaded, failure }
-
-/// One card's data. Cards load and fail independently.
-class SectionState<T> extends Equatable {
-  final SectionStatus status;
-  final T? data;
-  final String? errorMessage;
-
-  const SectionState.loading()
-    : status = SectionStatus.loading,
-      data = null,
-      errorMessage = null;
-
-  const SectionState.loaded(T this.data)
-    : status = SectionStatus.loaded,
-      errorMessage = null;
-
-  const SectionState.failure(String this.errorMessage)
-    : status = SectionStatus.failure,
-      data = null;
-
-  @override
-  List<Object?> get props => [status, data, errorMessage];
-}
-
 class DashboardState extends Equatable {
-  final DashboardRange range;
+  final SelectedRange range;
 
   /// [range] resolved against "today" when it was last loaded; the dates the
   /// daily sections show.
@@ -60,7 +35,7 @@ class DashboardState extends Equatable {
       };
 
   DashboardState copyWith({
-    DashboardRange? range,
+    SelectedRange? range,
     DateRange? resolvedRange,
     SectionState<List<DailyCount>>? registrations,
     SectionState<List<DailyCount>>? products,
