@@ -129,7 +129,7 @@ ReceiptTotals receiptTotals(List<ReceiptProduct> products);
   - `getReceipts(DateRange purchasedBetween, {String? creatorId, required int page})`.
   - `getReceipt(String id)`: a `ValidationFailure` for an unknown or malformed id (the backend answers 400).
 - `kReceiptsPageSize = 30`.
-- Use cases: `GetReceipts`, `GetReceiptDetails`.
+- Use cases: `GetReceiptsList`, `GetReceiptDetails`. *(Renamed during implementation from `GetReceipts`: the shared metrics already have a `GetReceiptsUseCase` for the daily counts.)*
 
 ### Receipts data (`lib/features/receipts/data/`)
 

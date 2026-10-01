@@ -5,10 +5,12 @@ import '../../../../shared/metrics/domain/entities/date_range.dart';
 import '../entities/receipts_page.dart';
 import '../repositories/receipts_repository.dart';
 
-class GetReceiptsUseCase {
+/// One page of the receipts list. (The daily receipt counts behind the
+/// charts are the shared metrics' `GetReceiptsUseCase`.)
+class GetReceiptsListUseCase {
   final ReceiptsRepository repository;
 
-  const GetReceiptsUseCase(this.repository);
+  const GetReceiptsListUseCase(this.repository);
 
   Future<Either<AdminFailure, ReceiptsPage>> call(
     DateRange purchasedBetween, {

@@ -24,6 +24,11 @@ import '../../features/products/domain/usecases/get_receipt_label_usecase.dart';
 import '../../features/products/presentation/bloc/product_detail_bloc.dart';
 import '../../features/products/presentation/bloc/products_list_bloc.dart';
 import '../../features/products/presentation/products_list_location.dart';
+import '../../features/receipts/data/datasources/receipts_remote_datasource.dart';
+import '../../features/receipts/data/repositories/receipts_repository_impl.dart';
+import '../../features/receipts/domain/repositories/receipts_repository.dart';
+import '../../features/receipts/domain/usecases/get_receipt_details_usecase.dart';
+import '../../features/receipts/domain/usecases/get_receipts_list_usecase.dart';
 import '../../features/users/data/datasources/users_remote_datasource.dart';
 import '../../features/users/data/repositories/users_repository_impl.dart';
 import '../../features/users/domain/repositories/users_repository.dart';
@@ -149,4 +154,11 @@ void setupServiceLocator({
   getIt.registerFactory(
     () => ProductDetailBloc(getProductDetailsUseCase: getIt()),
   );
+
+  getIt.registerLazySingleton(() => ReceiptsRemoteDataSource(getIt()));
+  getIt.registerLazySingleton<ReceiptsRepository>(
+    () => ReceiptsRepositoryImpl(remoteDataSource: getIt()),
+  );
+  getIt.registerFactory(() => GetReceiptsListUseCase(getIt()));
+  getIt.registerFactory(() => GetReceiptDetailsUseCase(getIt()));
 }

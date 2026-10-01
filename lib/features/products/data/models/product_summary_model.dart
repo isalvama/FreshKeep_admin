@@ -1,6 +1,6 @@
 import '../../../../core/network/json_readers.dart';
 import '../../domain/entities/product_summary.dart';
-import 'money_reader.dart';
+import '../../../../shared/products/money_reader.dart';
 
 class ProductSummaryModel extends ProductSummary {
   const ProductSummaryModel({
