@@ -12,8 +12,7 @@ const kFromParam = 'from';
 /// - While the session is being checked, everything waits on `/splash`.
 /// - Logged out, everything except `/login` goes to `/login`.
 /// - Logged in, `/login` and `/splash` go on to where the admin was headed,
-///   and paths outside every shell section (and its sub-pages) go to
-///   `/dashboard`.
+///   and unknown paths go to `/dashboard`.
 ///
 /// The original destination travels along as `?from=` so a deep link
 /// survives both the splash and the login.
@@ -33,7 +32,7 @@ String? resolveRedirect(AuthState state, Uri location) {
       if (path == kLoginRoute || path == kSplashRoute) {
         return from ?? kHomeRoute;
       }
-      final isKnown = shellDestinations.any((d) => d.matches(path));
+      final isKnown = shellDestinations.any((d) => d.path == path);
       return isKnown ? null : kHomeRoute;
   }
 }

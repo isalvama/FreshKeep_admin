@@ -11,7 +11,6 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../fakes/fake_auth_repository.dart';
-import '../fakes/test_route_dependencies.dart';
 
 void main() {
   late SessionExpiredNotifier notifier;
@@ -37,11 +36,7 @@ void main() {
       loginUseCase: LoginUseCase(repository),
       authBloc: authBloc,
     );
-    router = buildAppRouter(
-      authBloc,
-      initialLocation: initialLocation,
-      dependencies: testRouteDependencies(),
-    );
+    router = buildAppRouter(authBloc, initialLocation: initialLocation);
     // Same providers as App: the login page needs both blocs.
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -69,24 +64,15 @@ void main() {
   testWidgets('a logged-out deep link goes to login, then back after login', (
     tester,
   ) async {
-    await pumpRouter(tester, initialLocation: '/products?type=DAIRY');
+    await pumpRouter(tester, initialLocation: '/users?x=1');
 
-    expect(location(), '/login?from=%2Fproducts%3Ftype%3DDAIRY');
+    expect(location(), '/login?from=%2Fusers%3Fx%3D1');
 
     authBloc.add(const LoggedIn(kTestAdmin));
     await tester.pumpAndSettle();
 
-    // The products list then fills in its defaults, keeping the filter.
-    expect(location(), '/products?sort=name_asc&type=DAIRY&page=1');
-    expect(find.text('Product 000'), findsOneWidget);
-  });
-
-  testWidgets('a logged-out section sub-page goes to login with it as from', (
-    tester,
-  ) async {
-    await pumpRouter(tester, initialLocation: '/users/abc');
-
-    expect(location(), '/login?from=%2Fusers%2Fabc');
+    expect(location(), '/users?x=1');
+    expect(find.text('Coming in SPEC 03'), findsOneWidget);
   });
 
   testWidgets('logging in without from lands on /dashboard', (tester) async {
@@ -95,8 +81,7 @@ void main() {
     authBloc.add(const LoggedIn(kTestAdmin));
     await tester.pumpAndSettle();
 
-    // The dashboard then normalizes its missing range (SPEC 02).
-    expect(location(), '/dashboard?range=30d');
+    expect(location(), '/dashboard');
   });
 
   testWidgets('a stored session opens the deep link directly', (tester) async {
@@ -112,7 +97,7 @@ void main() {
   testWidgets('session expiry sends the admin to login', (tester) async {
     await pumpRouter(
       tester,
-      initialLocation: '/products?sort=name_asc&page=2',
+      initialLocation: '/products',
       withStoredAdmin: true,
     );
 
@@ -120,10 +105,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(authBloc.state, const Unauthenticated(sessionExpired: true));
-    expect(
-      location(),
-      '/login?from=${Uri.encodeComponent('/products?sort=name_asc&page=2')}',
-    );
+    expect(location(), '/login?from=%2Fproducts');
   });
 
   testWidgets('logging out leaves no way back to a protected page', (
