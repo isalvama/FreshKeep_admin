@@ -17,6 +17,7 @@ import '../../features/dashboard/domain/usecases/get_product_type_counts_usecase
 import '../../features/dashboard/domain/usecases/get_products_added_usecase.dart';
 import '../../features/dashboard/domain/usecases/get_receipts_usecase.dart';
 import '../../features/dashboard/domain/usecases/get_user_registrations_usecase.dart';
+import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../config/env.dart';
 import '../network/dio_client.dart';
 import '../network/session_expired_notifier.dart';
@@ -69,4 +70,12 @@ void setupServiceLocator({
   getIt.registerFactory(() => GetProductsAddedUseCase(getIt()));
   getIt.registerFactory(() => GetReceiptsUseCase(getIt()));
   getIt.registerFactory(() => GetProductTypeCountsUseCase(getIt()));
+  getIt.registerFactory(
+    () => DashboardBloc(
+      getUserRegistrationsUseCase: getIt(),
+      getProductsAddedUseCase: getIt(),
+      getReceiptsUseCase: getIt(),
+      getProductTypeCountsUseCase: getIt(),
+    ),
+  );
 }
