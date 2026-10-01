@@ -2,6 +2,9 @@ import 'package:equatable/equatable.dart';
 
 import '../utils/calendar_day.dart';
 
+/// The backend rejects metric ranges where `to − from` exceeds this.
+const kMaxRangeLengthInDays = 100;
+
 /// An inclusive range of calendar days (see [calendarDay]).
 class DateRange extends Equatable {
   final DateTime from;
