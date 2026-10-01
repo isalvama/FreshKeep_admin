@@ -1,6 +1,8 @@
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_creator_label_usecase.dart';
+import 'package:fresh_keep_admin/features/products/domain/usecases/get_product_details_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_products_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_receipt_label_usecase.dart';
+import 'package:fresh_keep_admin/features/products/presentation/bloc/product_detail_bloc.dart';
 import 'package:fresh_keep_admin/features/products/presentation/bloc/products_list_bloc.dart';
 import 'package:fresh_keep_admin/features/products/presentation/products_list_location.dart';
 import 'package:fresh_keep_admin/features/users/domain/usecases/get_user_details_usecase.dart';
@@ -47,6 +49,10 @@ RouteDependencies testRouteDependencies({
       getProductsUseCase: GetProductsUseCase(productsRepository),
       getCreatorLabelUseCase: GetCreatorLabelUseCase(productsRepository),
       getReceiptLabelUseCase: GetReceiptLabelUseCase(productsRepository),
+      today: () => kTestToday,
+    ),
+    productDetailBloc: () => ProductDetailBloc(
+      getProductDetailsUseCase: GetProductDetailsUseCase(productsRepository),
       today: () => kTestToday,
     ),
     productsListLocation: productsListLocation ?? ProductsListLocation(),

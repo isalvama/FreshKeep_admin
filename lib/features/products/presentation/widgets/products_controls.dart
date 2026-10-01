@@ -117,10 +117,7 @@ class ProductsControls extends StatelessWidget {
             // Long labels ellipsize instead of overflowing the field.
             isExpanded: true,
             initialValue: filters.productType,
-            decoration: const InputDecoration(
-              labelText: 'Type',
-              isDense: true,
-            ),
+            decoration: const InputDecoration(labelText: 'Type', isDense: true),
             items: [
               const DropdownMenuItem(value: null, child: Text(kAllTypesLabel)),
               for (final type in kProductTypes)

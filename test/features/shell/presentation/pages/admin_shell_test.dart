@@ -163,10 +163,7 @@ void main() {
 
       // Dashboard (SPEC 02), users (SPEC 03) and products (SPEC 04) are
       // built; the rest are placeholders.
-      for (final (path, spec) in [
-        ('/receipts', '05'),
-        ('/admins', '06'),
-      ]) {
+      for (final (path, spec) in [('/receipts', '05'), ('/admins', '06')]) {
         router.go(path);
         await tester.pumpAndSettle();
 

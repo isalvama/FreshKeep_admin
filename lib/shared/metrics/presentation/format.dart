@@ -41,3 +41,11 @@ String formatDateTime(DateTime instant) {
   final mm = local.minute.toString().padLeft(2, '0');
   return '${formatDate(local)}, $hh:$mm';
 }
+
+/// `OTHER_FRESH_PRODUCTS` → "Other fresh products": a backend enum constant
+/// as a label. Works for values the app doesn't know yet.
+String humanizeConstant(String raw) {
+  final words = raw.toLowerCase().replaceAll('_', ' ').trim();
+  if (words.isEmpty) return raw;
+  return words[0].toUpperCase() + words.substring(1);
+}

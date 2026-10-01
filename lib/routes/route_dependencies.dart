@@ -1,5 +1,6 @@
 import '../core/di/service_locator.dart';
 import '../features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import '../features/products/presentation/bloc/product_detail_bloc.dart';
 import '../features/products/presentation/bloc/products_list_bloc.dart';
 import '../features/products/presentation/products_list_location.dart';
 import '../features/users/presentation/bloc/user_detail_bloc.dart';
@@ -14,6 +15,7 @@ class RouteDependencies {
   final UserDetailBloc Function() userDetailBloc;
   final UsersListLocation usersListLocation;
   final ProductsListBloc Function() productsListBloc;
+  final ProductDetailBloc Function() productDetailBloc;
   final ProductsListLocation productsListLocation;
 
   const RouteDependencies({
@@ -22,6 +24,7 @@ class RouteDependencies {
     required this.userDetailBloc,
     required this.usersListLocation,
     required this.productsListBloc,
+    required this.productDetailBloc,
     required this.productsListLocation,
   });
 
@@ -31,6 +34,7 @@ class RouteDependencies {
     userDetailBloc: () => getIt<UserDetailBloc>(),
     usersListLocation: getIt<UsersListLocation>(),
     productsListBloc: () => getIt<ProductsListBloc>(),
+    productDetailBloc: () => getIt<ProductDetailBloc>(),
     productsListLocation: getIt<ProductsListLocation>(),
   );
 }

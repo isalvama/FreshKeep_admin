@@ -8,6 +8,7 @@ import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../features/products/presentation/pages/product_detail_page.dart';
 import '../features/products/presentation/pages/products_list_page.dart';
 import '../features/products/presentation/products_list_query.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
@@ -106,14 +107,16 @@ GoRouter buildAppRouter(
             ),
           ),
           // A sibling of /products, for the same reason as /users/:userId.
-          // TEMPORARY (SPEC 04 step 6): replaced by ProductDetailPage in
-          // step 7.
           GoRoute(
             path: '$kProductsPath/:productId',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              child: Center(
-                child: Text('Product ${state.pathParameters['productId']}'),
+              child: BlocProvider(
+                create: (_) => deps.productDetailBloc(),
+                child: ProductDetailPage(
+                  productId: state.pathParameters['productId']!,
+                  location: deps.productsListLocation,
+                ),
               ),
             ),
           ),
