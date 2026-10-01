@@ -114,7 +114,7 @@ abstract class DashboardRepository {   // product types only now
 class RegisteredUser extends Equatable {
   final String id;              // users.id — also the creatorId for metrics
   final String email;
-  final String username;
+  final String? username;       // nullable in the users table; shown as "—"
   final DateTime registeredAt;  // UTC instant
   final DateTime? lastLoggedAt; // UTC instant
 }
@@ -130,7 +130,8 @@ class UsersPage extends Equatable {
 }
 
 class UserDetails extends Equatable {
-  final String id, email, username;
+  final String id, email;
+  final String? username;       // nullable, as above
   final DateTime registeredAt;
   final DateTime? lastLoggedAt;
   final List<String> roles;     // "USER", "ADMIN"
@@ -313,6 +314,7 @@ class UserDetailSectionRetried extends UserDetailEvent { final UserDetailSection
 - **Yes:** A page past the end shows an empty-page message with a link rather than an automatic redirect. The URL stays what the admin asked for.
 - **Yes:** Show "Last login" as the backend gives it, with a footnote. The backend defaults it to the registration time; the UI doesn't guess.
 - **No:** Hiding last login when it's close to registration. The mobile app logs in right after every registration, so the heuristic would hide real logins.
+- **Yes:** `username` is nullable (`String?`), shown as "—". Decided during implementation (step 3): the `users.username` column has no `NOT NULL`, and one missing username shouldn't fail the whole page.
 - **Yes:** Timestamps in the browser's local time; dates (purchase date) as calendar days.
 - **Yes:** A detail page with profile, spaces, receipts and last-30-days activity charts (via `creatorId`). It uses data the backend already offers.
 - **Yes:** Activity charts fixed at the last 30 days, with no range control. The detail page stays simple.

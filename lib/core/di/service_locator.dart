@@ -15,6 +15,11 @@ import '../../features/dashboard/data/repositories/dashboard_repository_impl.dar
 import '../../features/dashboard/domain/repositories/dashboard_repository.dart';
 import '../../features/dashboard/domain/usecases/get_product_type_counts_usecase.dart';
 import '../../features/dashboard/presentation/bloc/dashboard_bloc.dart';
+import '../../features/users/data/datasources/users_remote_datasource.dart';
+import '../../features/users/data/repositories/users_repository_impl.dart';
+import '../../features/users/domain/repositories/users_repository.dart';
+import '../../features/users/domain/usecases/get_user_details_usecase.dart';
+import '../../features/users/domain/usecases/get_users_usecase.dart';
 import '../../shared/metrics/data/datasources/metrics_remote_datasource.dart';
 import '../../shared/metrics/data/repositories/metrics_repository_impl.dart';
 import '../../shared/metrics/domain/repositories/metrics_repository.dart';
@@ -87,4 +92,11 @@ void setupServiceLocator({
       getProductTypeCountsUseCase: getIt(),
     ),
   );
+
+  getIt.registerLazySingleton(() => UsersRemoteDataSource(getIt()));
+  getIt.registerLazySingleton<UsersRepository>(
+    () => UsersRepositoryImpl(remoteDataSource: getIt()),
+  );
+  getIt.registerFactory(() => GetUsersUseCase(getIt()));
+  getIt.registerFactory(() => GetUserDetailsUseCase(getIt()));
 }
