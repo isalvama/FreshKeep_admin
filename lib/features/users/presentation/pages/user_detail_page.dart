@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../products/domain/entities/product_filters.dart';
 import '../../../products/presentation/products_list_query.dart';
+import '../../../receipts/presentation/receipts_list_query.dart';
 import '../../../../shared/metrics/domain/entities/daily_count.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../../../shared/metrics/presentation/section_state.dart';
@@ -64,28 +65,49 @@ class _UserDetailPageState extends State<UserDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Row(
+              // Back on the left, the user's lists on the right; on narrow
+              // windows the links wrap onto their own line.
+              Wrap(
+                alignment: WrapAlignment.spaceBetween,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: 8,
                 children: [
                   TextButton.icon(
                     onPressed: () => context.go(widget.location.value),
                     icon: const Icon(Icons.arrow_back),
                     label: const Text('Back to users'),
                   ),
-                  const Spacer(),
                   // Only once the user is known: an unknown id has no
-                  // products to show.
+                  // products or receipts to show.
                   if (state.details.status == SectionStatus.loaded)
-                    TextButton.icon(
-                      key: const Key('view-products'),
-                      onPressed: () => context.go(
-                        productsListLocation(
-                          ProductsListQuery(
-                            filters: ProductFilters(creatorId: widget.userId),
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        TextButton.icon(
+                          key: const Key('view-products'),
+                          onPressed: () => context.go(
+                            productsListLocation(
+                              ProductsListQuery(
+                                filters: ProductFilters(
+                                  creatorId: widget.userId,
+                                ),
+                              ),
+                            ),
                           ),
+                          icon: const Icon(Icons.inventory_2_outlined),
+                          label: const Text('View products'),
                         ),
-                      ),
-                      icon: const Icon(Icons.inventory_2_outlined),
-                      label: const Text('View products'),
+                        TextButton.icon(
+                          key: const Key('view-receipts'),
+                          onPressed: () => context.go(
+                            receiptsListLocation(
+                              ReceiptsListQuery(creatorId: widget.userId),
+                            ),
+                          ),
+                          icon: const Icon(Icons.receipt_long_outlined),
+                          label: const Text('View receipts'),
+                        ),
+                      ],
                     ),
                 ],
               ),
@@ -166,7 +188,12 @@ class _UserDetailPageState extends State<UserDetailPage> {
               right: UserSpacesCard(spaces: user.spaces),
             ),
             const SizedBox(height: 16),
-            UserReceiptsCard(receipts: user.receipts),
+            UserReceiptsCard(
+              receipts: user.receipts,
+              onReceiptSelected: (receipt) => context.go(
+                '$kReceiptsPath/${Uri.encodeComponent(receipt.id)}',
+              ),
+            ),
           ],
         );
     }

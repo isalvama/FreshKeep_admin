@@ -117,7 +117,7 @@ void main() {
     expect(find.text('Kitchen'), findsOneWidget);
     expect(find.text('SuperMart'), findsOneWidget);
     expect(find.text('Sep 8, 2026'), findsOneWidget);
-    expect(find.text(kOtherProductsOnReceipt), findsOneWidget);
+    expect(find.text(kViewReceipt), findsOneWidget);
   });
 
   testWidgets('missing values show "—"', (tester) async {
@@ -153,7 +153,7 @@ void main() {
     await pumpDetail(tester);
 
     expect(find.text(kNoReceiptMessage), findsOneWidget);
-    expect(find.text(kOtherProductsOnReceipt), findsNothing);
+    expect(find.text(kViewReceipt), findsNothing);
   });
 
   testWidgets('the creator opens their user page', (tester) async {
@@ -165,19 +165,14 @@ void main() {
     expect(location(), '/users/$kTestCreatorId');
   });
 
-  testWidgets('"Other products on this receipt" opens the filtered list', (
-    tester,
-  ) async {
+  testWidgets('"View receipt" opens the receipt page', (tester) async {
     await pumpDetail(tester);
 
-    await tester.tap(find.text(kOtherProductsOnReceipt));
+    await tester.tap(find.text(kViewReceipt));
     await tester.pumpAndSettle();
 
-    expect(
-      location(),
-      '/products?sort=name_asc&receiptId=$kTestReceiptId&page=1',
-    );
-    expect(find.text('Receipt: SuperMart · Sep 8, 2026'), findsOneWidget);
+    expect(location(), '/receipts/$kTestReceiptId');
+    expect(find.text('Image attached (JPEG)'), findsOneWidget);
   });
 
   testWidgets('an unknown or malformed id shows "Product not found"', (
