@@ -11,6 +11,7 @@ import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 
 import '../fakes/fake_auth_repository.dart';
+import '../fakes/fake_dashboard_repository.dart';
 
 void main() {
   late SessionExpiredNotifier notifier;
@@ -36,7 +37,11 @@ void main() {
       loginUseCase: LoginUseCase(repository),
       authBloc: authBloc,
     );
-    router = buildAppRouter(authBloc, initialLocation: initialLocation);
+    router = buildAppRouter(
+      authBloc,
+      initialLocation: initialLocation,
+      dashboardBlocFactory: buildTestDashboardBloc,
+    );
     // Same providers as App: the login page needs both blocs.
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -81,7 +86,8 @@ void main() {
     authBloc.add(const LoggedIn(kTestAdmin));
     await tester.pumpAndSettle();
 
-    expect(location(), '/dashboard');
+    // The dashboard then normalizes its missing range (SPEC 02).
+    expect(location(), '/dashboard?range=30d');
   });
 
   testWidgets('a stored session opens the deep link directly', (tester) async {
