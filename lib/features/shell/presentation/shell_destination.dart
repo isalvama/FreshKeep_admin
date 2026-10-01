@@ -18,13 +18,6 @@ class ShellDestination {
     required this.selectedIcon,
     required this.comingInSpec,
   });
-
-  /// Whether [location] (a URL path) belongs to this section: the section
-  /// itself or a page under it (`/users/<id>`). Look-alikes such as
-  /// `/userszzz`, and a bare trailing slash, don't match.
-  bool matches(String location) =>
-      location == path ||
-      (location.startsWith('$path/') && location.length > path.length + 1);
 }
 
 const shellDestinations = [

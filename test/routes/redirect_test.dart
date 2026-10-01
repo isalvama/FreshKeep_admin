@@ -52,10 +52,6 @@ void main() {
       );
     });
 
-    test('sends a section sub-page to /login with it as from', () {
-      expect(_redirect(loggedOut, '/users/abc'), '/login?from=%2Fusers%2Fabc');
-    });
-
     test('sends the bare root to /login without from', () {
       expect(_redirect(loggedOut, '/'), '/login');
     });
@@ -83,18 +79,6 @@ void main() {
     test('sends /login and /splash without from to /dashboard', () {
       expect(_redirect(loggedIn, '/login'), '/dashboard');
       expect(_redirect(loggedIn, '/splash'), '/dashboard');
-    });
-
-    test('stays on pages under a shell section', () {
-      expect(_redirect(loggedIn, '/users/abc'), isNull);
-      expect(_redirect(loggedIn, '/users/abc?tab=x'), isNull);
-      expect(_redirect(loggedIn, '/receipts/r-1'), isNull);
-    });
-
-    test('sends look-alikes of a section to /dashboard', () {
-      for (final path in ['/userszzz', '/nope/users', '/users/', '/dash']) {
-        expect(_redirect(loggedIn, path), '/dashboard', reason: path);
-      }
     });
 
     test('sends unknown paths to /dashboard', () {

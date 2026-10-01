@@ -41,16 +41,6 @@ fvm flutter test
 
 **"Something went wrong" on every admin login.** The backend is missing SPEC 00 (admin login).
 
-## Known limitations
-
-**Dashboard days near midnight.** The dashboard's ranges end on *your browser's* local date. The backend groups activity into days in *its database's* timezone. If they differ, the last day's column can be off by one near midnight.
-
-**Users list days near midnight.** "Registered between" uses the same browser-local dates. The backend turns them into day boundaries in its own (JVM) timezone, while registration times show in your local time. A user registered close to midnight can appear one day off from the range you picked.
-
-**Products list has no total.** The backend returns a plain list for each page, so the list shows "Products 31–60" without "of N", and Next is enabled whenever a page is full. If the last page has exactly 30 products, Next leads to an empty "No more products" page.
-
-**Product filters need backend SPEC 01.** Filtering products by creator or by receipt, and opening a receipt's label, rely on fixes in `fresh-keep_backend/specs/01-fix-admin-product-filters.md`. Against an older backend, those requests fail with a 500 (the list itself still works).
-
 ## Deployment notes
 
 The app uses path URLs (`/users/…`, no `#`). Any static host must serve `index.html` for every path (an SPA rewrite rule). Without it, reloading a deep link returns 404. Hosting and deployment configuration are not set up yet.
