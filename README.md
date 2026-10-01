@@ -51,6 +51,12 @@ fvm flutter test
 
 **Product filters need backend SPEC 01.** Filtering products by creator or by receipt, and opening a receipt's label, rely on fixes in `fresh-keep_backend/specs/01-fix-admin-product-filters.md`. Against an older backend, those requests fail with a 500 (the list itself still works).
 
+**Receipts need backend SPEC 02.** The receipts list expects the paged response from `fresh-keep_backend/specs/02-admin-shopping-receipts-paging.md`, and the receipt page uses its `deleted` flag. Against an older backend, the list shows "Something went wrong".
+
+**Receipts days near midnight.** "Purchased between" uses browser-local dates, while the backend stores purchase dates as UTC days. A receipt purchased close to midnight can appear one day off from the range you picked.
+
+**Receipts have no status or image yet.** Unconfirmed (draft) receipts are listed alongside confirmed ones, and the receipt page only says whether an image is attached. The backend has no status field or viewable image URL for admins.
+
 ## Deployment notes
 
 The app uses path URLs (`/users/…`, no `#`). Any static host must serve `index.html` for every path (an SPA rewrite rule). Without it, reloading a deep link returns 404. Hosting and deployment configuration are not set up yet.
