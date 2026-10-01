@@ -5,12 +5,12 @@ import 'package:go_router/go_router.dart';
 import '../../../../shared/metrics/domain/entities/selected_range.dart';
 import '../../../../shared/metrics/presentation/section_state.dart';
 import '../../../../shared/metrics/presentation/widgets/range_bar.dart';
+import '../../../../shared/widgets/pagination_bar.dart';
 import '../../domain/entities/users_page.dart';
 import '../bloc/users_list_bloc.dart';
 import '../users_list_location.dart';
 import '../users_list_query.dart';
 import '../widgets/last_login_footnote.dart';
-import '../widgets/pagination_bar.dart';
 import '../widgets/users_table.dart';
 
 const kNoUsersInRangeMessage = 'No users registered in this range';
@@ -150,7 +150,12 @@ class _UsersListPageState extends State<UsersListPage> {
         ),
         const SizedBox(height: 8),
         PaginationBar(
-          page: page,
+          page: page.page,
+          firstIndex: page.firstIndex,
+          lastIndex: page.lastIndex,
+          total: page.totalElements,
+          hasPrevious: page.hasPrevious,
+          hasNext: page.hasNext,
           onPageChanged: (number) =>
               _go(UsersListQuery(range: query.range, page: number)),
         ),

@@ -324,4 +324,15 @@ void main() {
     expect(second.dy, greaterThan(first.dy));
     expect(find.byType(ChartCard), findsNWidgets(4));
   });
+
+  testWidgets('a product type label opens the products list filtered by it', (
+    tester,
+  ) async {
+    await pumpDashboard(tester);
+
+    await tester.tap(find.byKey(const ValueKey('type-link-MEAT')));
+    await tester.pumpAndSettle();
+
+    expect(location(), '/products?sort=name_asc&type=MEAT&page=1');
+  });
 }

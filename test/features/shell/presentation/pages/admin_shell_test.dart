@@ -161,13 +161,9 @@ void main() {
     ) async {
       await pumpShell(tester);
 
-      // Dashboard (SPEC 02) and users (SPEC 03) are built; the rest are
-      // placeholders.
-      for (final (path, spec) in [
-        ('/products', '04'),
-        ('/receipts', '05'),
-        ('/admins', '06'),
-      ]) {
+      // Dashboard (SPEC 02), users (SPEC 03) and products (SPEC 04) are
+      // built; the rest are placeholders.
+      for (final (path, spec) in [('/receipts', '05'), ('/admins', '06')]) {
         router.go(path);
         await tester.pumpAndSettle();
 

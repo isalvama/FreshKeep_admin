@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../domain/entities/user_details.dart';
-import 'users_table.dart';
 
 const kNoReceiptsMessage = 'No receipts yet';
 

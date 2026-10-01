@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../products/domain/entities/product_filters.dart';
+import '../../../products/presentation/products_list_query.dart';
 import '../../../../shared/metrics/domain/entities/daily_count.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../../../shared/metrics/presentation/section_state.dart';
@@ -62,13 +64,30 @@ class _UserDetailPageState extends State<UserDetailPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton.icon(
-                  onPressed: () => context.go(widget.location.value),
-                  icon: const Icon(Icons.arrow_back),
-                  label: const Text('Back to users'),
-                ),
+              Row(
+                children: [
+                  TextButton.icon(
+                    onPressed: () => context.go(widget.location.value),
+                    icon: const Icon(Icons.arrow_back),
+                    label: const Text('Back to users'),
+                  ),
+                  const Spacer(),
+                  // Only once the user is known: an unknown id has no
+                  // products to show.
+                  if (state.details.status == SectionStatus.loaded)
+                    TextButton.icon(
+                      key: const Key('view-products'),
+                      onPressed: () => context.go(
+                        productsListLocation(
+                          ProductsListQuery(
+                            filters: ProductFilters(creatorId: widget.userId),
+                          ),
+                        ),
+                      ),
+                      icon: const Icon(Icons.inventory_2_outlined),
+                      label: const Text('View products'),
+                    ),
+                ],
               ),
               const SizedBox(height: 16),
               if (state.userNotFound)

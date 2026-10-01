@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../domain/entities/registered_user.dart';
 
-/// Shown where a value is missing (no username, no last login).
-const kMissingValue = '—';
-
 /// One row per user; tapping a row opens that user.
 class UsersTable extends StatelessWidget {
   final List<RegisteredUser> users;

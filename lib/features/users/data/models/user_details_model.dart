@@ -1,5 +1,5 @@
 import '../../domain/entities/user_details.dart';
-import 'json_readers.dart';
+import '../../../../core/network/json_readers.dart';
 
 class UserDetailsModel extends UserDetails {
   const UserDetailsModel({

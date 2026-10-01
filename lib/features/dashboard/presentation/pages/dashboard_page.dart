@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../products/domain/entities/product_filters.dart';
+import '../../../products/presentation/products_list_query.dart';
 import '../../../../shared/metrics/domain/entities/daily_count.dart';
 import '../../../../shared/metrics/domain/entities/selected_range.dart';
 import '../bloc/dashboard_bloc.dart';
@@ -161,7 +163,15 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       isEmpty: counts.isEmpty,
       emptyMessage: 'No products yet',
-      chartBuilder: (_) => ProductTypeBarChart(counts: counts),
+      chartBuilder: (_) => ProductTypeBarChart(
+        counts: counts,
+        // Each type opens the products list filtered by it.
+        onTypeSelected: (type) => context.go(
+          productsListLocation(
+            ProductsListQuery(filters: ProductFilters(productType: type)),
+          ),
+        ),
+      ),
       tableBuilder: (_) => CountsTable(
         labelHeader: 'Type',
         rows: [for (final c in counts) (c.label, c.count)],

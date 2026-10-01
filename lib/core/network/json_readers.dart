@@ -1,4 +1,4 @@
-import '../../../../shared/metrics/domain/utils/calendar_day.dart';
+import '../../shared/metrics/domain/utils/calendar_day.dart';
 
 /// An ISO-8601 instant such as `2026-01-10T10:00:00Z` (how the backend
 /// serializes `Instant`), as UTC. Throws [FormatException] otherwise.
@@ -18,3 +18,6 @@ DateTime readCalendarDay(Object? value) {
   if (day == null) throw FormatException('Expected yyyy-MM-dd, got $value');
   return day;
 }
+
+DateTime? readOptionalCalendarDay(Object? value) =>
+    value == null ? null : readCalendarDay(value);

@@ -8,6 +8,9 @@ import '../features/auth/presentation/bloc/auth_bloc.dart';
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/splash_page.dart';
 import '../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../features/products/presentation/pages/product_detail_page.dart';
+import '../features/products/presentation/pages/products_list_page.dart';
+import '../features/products/presentation/products_list_query.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
 import '../features/shell/presentation/pages/section_placeholder_page.dart';
 import '../features/shell/presentation/shell_destination.dart';
@@ -76,6 +79,13 @@ GoRouter buildAppRouter(
                       location: deps.usersListLocation,
                     ),
                   ),
+                  kProductsPath => BlocProvider(
+                    create: (_) => deps.productsListBloc(),
+                    child: ProductsListPage(
+                      query: state.uri.queryParameters,
+                      location: deps.productsListLocation,
+                    ),
+                  ),
                   _ => SectionPlaceholderPage(destination: destination),
                 },
               ),
@@ -92,6 +102,20 @@ GoRouter buildAppRouter(
                 child: UserDetailPage(
                   userId: state.pathParameters['userId']!,
                   location: deps.usersListLocation,
+                ),
+              ),
+            ),
+          ),
+          // A sibling of /products, for the same reason as /users/:userId.
+          GoRoute(
+            path: '$kProductsPath/:productId',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: BlocProvider(
+                create: (_) => deps.productDetailBloc(),
+                child: ProductDetailPage(
+                  productId: state.pathParameters['productId']!,
+                  location: deps.productsListLocation,
                 ),
               ),
             ),
