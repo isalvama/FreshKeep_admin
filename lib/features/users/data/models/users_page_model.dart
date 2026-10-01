@@ -1,6 +1,6 @@
 import '../../domain/entities/registered_user.dart';
 import '../../domain/entities/users_page.dart';
-import 'json_readers.dart';
+import '../../../../core/network/json_readers.dart';
 
 class RegisteredUserModel extends RegisteredUser {
   const RegisteredUserModel({

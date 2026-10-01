@@ -1,4 +1,4 @@
-import '../../../../shared/metrics/domain/utils/calendar_day.dart';
+import '../../shared/metrics/domain/utils/calendar_day.dart';
 
 /// An ISO-8601 instant such as `2026-01-10T10:00:00Z` (how the backend
 /// serializes `Instant`), as UTC. Throws [FormatException] otherwise.
