@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'money.dart';
+import '../../../../shared/products/money.dart';
 
 /// One row of the products list.
 class ProductSummary extends Equatable {

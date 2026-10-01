@@ -3,6 +3,9 @@ import '../features/dashboard/presentation/bloc/dashboard_bloc.dart';
 import '../features/products/presentation/bloc/product_detail_bloc.dart';
 import '../features/products/presentation/bloc/products_list_bloc.dart';
 import '../features/products/presentation/products_list_location.dart';
+import '../features/receipts/presentation/bloc/receipt_detail_bloc.dart';
+import '../features/receipts/presentation/bloc/receipts_list_bloc.dart';
+import '../features/receipts/presentation/receipts_list_location.dart';
 import '../features/users/presentation/bloc/user_detail_bloc.dart';
 import '../features/users/presentation/bloc/users_list_bloc.dart';
 import '../features/users/presentation/users_list_location.dart';
@@ -17,6 +20,9 @@ class RouteDependencies {
   final ProductsListBloc Function() productsListBloc;
   final ProductDetailBloc Function() productDetailBloc;
   final ProductsListLocation productsListLocation;
+  final ReceiptsListBloc Function() receiptsListBloc;
+  final ReceiptDetailBloc Function() receiptDetailBloc;
+  final ReceiptsListLocation receiptsListLocation;
 
   const RouteDependencies({
     required this.dashboardBloc,
@@ -26,6 +32,9 @@ class RouteDependencies {
     required this.productsListBloc,
     required this.productDetailBloc,
     required this.productsListLocation,
+    required this.receiptsListBloc,
+    required this.receiptDetailBloc,
+    required this.receiptsListLocation,
   });
 
   factory RouteDependencies.fromServiceLocator() => RouteDependencies(
@@ -36,5 +45,8 @@ class RouteDependencies {
     productsListBloc: () => getIt<ProductsListBloc>(),
     productDetailBloc: () => getIt<ProductDetailBloc>(),
     productsListLocation: getIt<ProductsListLocation>(),
+    receiptsListBloc: () => getIt<ReceiptsListBloc>(),
+    receiptDetailBloc: () => getIt<ReceiptDetailBloc>(),
+    receiptsListLocation: getIt<ReceiptsListLocation>(),
   );
 }

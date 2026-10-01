@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'money.dart';
+import '../../../../shared/products/money.dart';
 
 class ProductDetails extends Equatable {
   final String id;

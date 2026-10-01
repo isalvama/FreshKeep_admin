@@ -14,7 +14,7 @@ import 'package:fresh_keep_admin/features/products/domain/entities/product_sort.
 import 'package:fresh_keep_admin/features/products/domain/entities/receipt_label.dart';
 import 'package:fresh_keep_admin/features/products/presentation/pages/products_list_page.dart';
 import 'package:fresh_keep_admin/features/products/presentation/products_list_location.dart';
-import 'package:fresh_keep_admin/features/products/presentation/widgets/expiration_cell.dart';
+import 'package:fresh_keep_admin/shared/products/widgets/expiration_cell.dart';
 import 'package:fresh_keep_admin/routes/app_router.dart';
 import 'package:go_router/go_router.dart';
 

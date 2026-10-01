@@ -3,7 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:fresh_keep_admin/core/errors/failures.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_filters.dart';
 import 'package:fresh_keep_admin/features/products/domain/entities/product_sort.dart';
-import 'package:fresh_keep_admin/features/products/domain/usecases/get_creator_label_usecase.dart';
+import 'package:fresh_keep_admin/shared/creators/domain/get_creator_label_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_products_usecase.dart';
 import 'package:fresh_keep_admin/features/products/domain/usecases/get_receipt_label_usecase.dart';
 import 'package:fresh_keep_admin/features/products/presentation/bloc/products_list_bloc.dart';

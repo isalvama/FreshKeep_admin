@@ -36,10 +36,6 @@ class ProductsRepositoryImpl implements ProductsRepository {
       guardRequest(() => remoteDataSource.getProduct(productId));
 
   @override
-  Future<Either<AdminFailure, String>> getCreatorEmail(String userId) =>
-      guardRequest(() => remoteDataSource.getUserEmail(userId));
-
-  @override
   Future<Either<AdminFailure, ReceiptLabel>> getReceiptLabel(
     String receiptId,
   ) => guardRequest(() => remoteDataSource.getReceiptLabel(receiptId));

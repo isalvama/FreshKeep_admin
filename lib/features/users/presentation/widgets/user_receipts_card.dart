@@ -9,11 +9,16 @@ const kNoReceiptsMessage = 'No receipts yet';
 /// returns all of a user's receipts at once.
 const _maxTableHeight = 360.0;
 
-/// The user's receipts, newest first. Rows aren't links yet (SPEC 05).
+/// The user's receipts, newest first; a row opens that receipt.
 class UserReceiptsCard extends StatelessWidget {
   final List<UserReceipt> receipts;
+  final ValueChanged<UserReceipt> onReceiptSelected;
 
-  const UserReceiptsCard({super.key, required this.receipts});
+  const UserReceiptsCard({
+    super.key,
+    required this.receipts,
+    required this.onReceiptSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +53,7 @@ class UserReceiptsCard extends StatelessWidget {
                           minWidth: constraints.maxWidth,
                         ),
                         child: DataTable(
+                          showCheckboxColumn: false,
                           columns: const [
                             DataColumn(label: Text('Store')),
                             DataColumn(label: Text('Purchase date')),
@@ -56,6 +62,8 @@ class UserReceiptsCard extends StatelessWidget {
                           rows: [
                             for (final receipt in newestFirst)
                               DataRow(
+                                onSelectChanged: (_) =>
+                                    onReceiptSelected(receipt),
                                 cells: [
                                   DataCell(
                                     Text(receipt.storeName ?? kMissingValue),

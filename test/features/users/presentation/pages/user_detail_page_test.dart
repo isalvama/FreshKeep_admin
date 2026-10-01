@@ -273,6 +273,7 @@ void main() {
     expect(find.text('User not found'), findsOneWidget);
     expect(find.text('Back to users'), findsOneWidget);
     expect(find.text('View products'), findsNothing);
+    expect(find.text('View receipts'), findsNothing);
     expect(find.byType(BarChart), findsNothing);
     expect(find.text('Spaces'), findsNothing);
   });
@@ -335,5 +336,26 @@ void main() {
 
     expect(location(), '/products?sort=name_asc&creatorId=$_uuidUser&page=1');
     expect(find.text('Added by alice@example.com'), findsOneWidget);
+  });
+
+  testWidgets('"View receipts" opens the receipts this user uploaded', (
+    tester,
+  ) async {
+    await pumpDetail(tester, location: '/users/$_uuidUser');
+
+    await tester.tap(find.text('View receipts'));
+    await tester.pumpAndSettle();
+
+    expect(location(), '/receipts?range=30d&creatorId=$_uuidUser&page=1');
+    expect(find.text('Added by alice@example.com'), findsOneWidget);
+  });
+
+  testWidgets('a receipt row opens that receipt', (tester) async {
+    await pumpDetail(tester);
+
+    await tester.tap(find.text('SuperMart'));
+    await tester.pumpAndSettle();
+
+    expect(location(), '/receipts/r-2');
   });
 }

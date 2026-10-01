@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../../../shared/products/product_type.dart';
 import '../../domain/entities/product_summary.dart';
-import '../format_money.dart';
-import 'expiration_cell.dart';
+import '../../../../shared/products/format_money.dart';
+import '../../../../shared/products/widgets/expiration_cell.dart';
 
 /// One row per product; tapping a row opens that product.
 class ProductsTable extends StatelessWidget {

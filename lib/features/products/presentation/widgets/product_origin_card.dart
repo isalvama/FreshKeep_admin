@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../domain/entities/product_details.dart';
 import '../../../../shared/widgets/text_link.dart';
-import 'detail_field.dart';
+import '../../../../shared/widgets/detail_field.dart';
 
 const kNoReceiptMessage = 'Not added from a shopping receipt.';
-const kOtherProductsOnReceipt = 'Other products on this receipt';
+const kViewReceipt = 'View receipt';
 
 /// Where a product came from: who added it, in which space, from which
 /// store's receipt.
@@ -54,10 +54,10 @@ class ProductOriginCard extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               TextButton.icon(
-                key: const Key('receipt-products-link'),
+                key: const Key('view-receipt-link'),
                 onPressed: () => onReceiptSelected(origin.receiptId),
                 icon: const Icon(Icons.receipt_long_outlined),
-                label: const Text(kOtherProductsOnReceipt),
+                label: const Text(kViewReceipt),
               ),
             ],
           ],

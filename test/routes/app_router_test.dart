@@ -102,11 +102,11 @@ void main() {
   testWidgets('a stored session opens the deep link directly', (tester) async {
     await pumpRouter(
       tester,
-      initialLocation: '/receipts',
+      initialLocation: '/receipts?range=7d&page=2',
       withStoredAdmin: true,
     );
 
-    expect(location(), '/receipts');
+    expect(location(), '/receipts?range=7d&page=2');
   });
 
   testWidgets('session expiry sends the admin to login', (tester) async {

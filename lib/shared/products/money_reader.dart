@@ -1,4 +1,4 @@
-import '../../domain/entities/money.dart';
+import 'money.dart';
 
 /// A price needs both its amount and its currency; with either missing there
 /// is nothing sensible to show, so the product has no price.

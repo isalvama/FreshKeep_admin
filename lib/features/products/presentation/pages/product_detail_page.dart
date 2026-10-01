@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../receipts/presentation/receipts_list_query.dart';
 import '../../../users/presentation/users_list_query.dart';
-import '../../domain/entities/product_filters.dart';
 import '../bloc/product_detail_bloc.dart';
 import '../products_list_location.dart';
-import '../products_list_query.dart';
 import '../widgets/product_card.dart';
 import '../widgets/product_origin_card.dart';
 
@@ -122,13 +121,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             origin: product.origin,
             onCreatorSelected: (userId) =>
                 context.go('$kUsersPath/${Uri.encodeComponent(userId)}'),
-            onReceiptSelected: (receiptId) => context.go(
-              productsListLocation(
-                ProductsListQuery(
-                  filters: ProductFilters(receiptId: receiptId),
-                ),
-              ),
-            ),
+            // The receipt page lists all its products.
+            onReceiptSelected: (receiptId) =>
+                context.go('$kReceiptsPath/${Uri.encodeComponent(receiptId)}'),
           ),
         );
     }

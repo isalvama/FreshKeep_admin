@@ -1,4 +1,4 @@
-import '../../../../shared/metrics/domain/utils/calendar_day.dart';
+import '../metrics/domain/utils/calendar_day.dart';
 
 enum ExpirationStatus { expired, soon, ok }
 
