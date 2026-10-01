@@ -80,6 +80,14 @@ void main() {
     expect(find.text('Coming in SPEC 03'), findsOneWidget);
   });
 
+  testWidgets('a logged-out section sub-page goes to login with it as from', (
+    tester,
+  ) async {
+    await pumpRouter(tester, initialLocation: '/users/abc');
+
+    expect(location(), '/login?from=%2Fusers%2Fabc');
+  });
+
   testWidgets('logging in without from lands on /dashboard', (tester) async {
     await pumpRouter(tester, initialLocation: '/login');
 
