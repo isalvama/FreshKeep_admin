@@ -72,7 +72,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(location(), '/users?x=1');
-    expect(find.text('Users'), findsOneWidget);
+    expect(find.text('Coming in SPEC 03'), findsOneWidget);
   });
 
   testWidgets('logging in without from lands on /dashboard', (tester) async {
