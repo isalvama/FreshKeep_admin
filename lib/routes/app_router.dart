@@ -11,6 +11,7 @@ import '../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
 import '../features/shell/presentation/pages/section_placeholder_page.dart';
 import '../features/shell/presentation/shell_destination.dart';
+import '../features/users/presentation/pages/user_detail_page.dart';
 import '../features/users/presentation/pages/users_list_page.dart';
 import '../features/users/presentation/users_list_query.dart';
 import 'redirect.dart';
@@ -86,9 +87,12 @@ GoRouter buildAppRouter(
             path: '$kUsersPath/:userId',
             pageBuilder: (context, state) => NoTransitionPage(
               key: state.pageKey,
-              // Temporary: SPEC 03 step 8 builds the user detail page.
-              child: Center(
-                child: Text('User ${state.pathParameters['userId']}'),
+              child: BlocProvider(
+                create: (_) => deps.userDetailBloc(),
+                child: UserDetailPage(
+                  userId: state.pathParameters['userId']!,
+                  location: deps.usersListLocation,
+                ),
               ),
             ),
           ),
