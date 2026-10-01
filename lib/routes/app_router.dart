@@ -11,6 +11,8 @@ import '../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../features/products/presentation/pages/product_detail_page.dart';
 import '../features/products/presentation/pages/products_list_page.dart';
 import '../features/products/presentation/products_list_query.dart';
+import '../features/receipts/presentation/pages/receipts_list_page.dart';
+import '../features/receipts/presentation/receipts_list_query.dart';
 import '../features/shell/presentation/pages/admin_shell.dart';
 import '../features/shell/presentation/pages/section_placeholder_page.dart';
 import '../features/shell/presentation/shell_destination.dart';
@@ -86,6 +88,13 @@ GoRouter buildAppRouter(
                       location: deps.productsListLocation,
                     ),
                   ),
+                  kReceiptsPath => BlocProvider(
+                    create: (_) => deps.receiptsListBloc(),
+                    child: ReceiptsListPage(
+                      query: state.uri.queryParameters,
+                      location: deps.receiptsListLocation,
+                    ),
+                  ),
                   _ => SectionPlaceholderPage(destination: destination),
                 },
               ),
@@ -117,6 +126,18 @@ GoRouter buildAppRouter(
                   productId: state.pathParameters['productId']!,
                   location: deps.productsListLocation,
                 ),
+              ),
+            ),
+          ),
+          // A sibling of /receipts, for the same reason as /users/:userId.
+          // TEMPORARY (SPEC 05 step 6): replaced by ReceiptDetailPage in
+          // step 7.
+          GoRoute(
+            path: '$kReceiptsPath/:receiptId',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: Center(
+                child: Text('Receipt ${state.pathParameters['receiptId']}'),
               ),
             ),
           ),

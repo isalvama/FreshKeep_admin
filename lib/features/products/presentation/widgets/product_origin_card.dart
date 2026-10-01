@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../shared/metrics/presentation/format.dart';
 import '../../domain/entities/product_details.dart';
 import '../../../../shared/widgets/text_link.dart';
-import 'detail_field.dart';
+import '../../../../shared/widgets/detail_field.dart';
 
 const kNoReceiptMessage = 'Not added from a shopping receipt.';
 const kOtherProductsOnReceipt = 'Other products on this receipt';
